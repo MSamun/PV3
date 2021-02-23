@@ -25,18 +25,16 @@ namespace PV3
         private void InitializePlayerSpells()
         {
             var playerSpellJsonData = DataManager.LoadDataFromJson().PlayerData.SpellData;
+            var playerCombatClass = DataManager.LoadDataFromJson().PlayerData.BaseData.CombatClassID;
 
             for (var i = 0; i < PlayerObject.ListOfSpells.Count; i++)
             {
-                PlayerObject.ListOfSpells[i].spell = ListOfSpellsObject.FindSpellByID(playerSpellJsonData[i].SpellID);
+                PlayerObject.ListOfSpells[i].spell = ListOfSpellsObject.FindSpellByID(playerSpellJsonData[i].SpellID, (CombatClass)playerCombatClass);
+                if (PlayerObject.ListOfSpells[i].spell) continue;
 
-                if (!PlayerObject.ListOfSpells[i].spell)
-                {
-                    print($"Could not find the Spell ID in the JSON file ---> {playerSpellJsonData[i].SpellID.ToString()}");
-                }
+                print($"JSON file error. Unable to find Spell ID #{playerSpellJsonData[i].SpellID.ToString()} in {((CombatClass)playerCombatClass).ToString()} Spells.");
             }
 
-            print("Executed - Game Manager!");
             OnLoadedPlayerSpellsFromJsonEvent.Raise();
         }
 

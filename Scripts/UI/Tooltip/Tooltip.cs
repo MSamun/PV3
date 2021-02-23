@@ -8,12 +8,12 @@ namespace PV3.UI.Tooltip
     {
         private RectTransform rectTransform;
 
-        [SerializeField] private int characterWrapLimit;
+        [SerializeField] protected int characterWrapLimit;
 
         [Header("UI Components")]
-        [SerializeField] private LayoutElement layoutElement;
-        [SerializeField] private TextMeshProUGUI headerText;
-        [SerializeField] private TextMeshProUGUI contentText;
+        [SerializeField] protected LayoutElement layoutElement;
+        [SerializeField] protected TextMeshProUGUI headerText;
+        [SerializeField] protected TextMeshProUGUI contentText;
 
         private void Awake()
         {
@@ -44,7 +44,7 @@ namespace PV3.UI.Tooltip
             CheckIfNeedLayoutElement();
         }
 
-        private void CheckIfNeedLayoutElement()
+        protected virtual void CheckIfNeedLayoutElement()
         {
             if (headerText.text == null) return;
 

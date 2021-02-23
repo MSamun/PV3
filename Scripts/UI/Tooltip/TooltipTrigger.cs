@@ -19,18 +19,18 @@ namespace PV3.UI.Tooltip
     public class TooltipTrigger : MonobehaviourReference
     {
         [Header("Pivot Points")]
-        [SerializeField] private PivotVertical PivotVertical;
-        [SerializeField] private PivotHorizontal PivotHorizontal;
+        [SerializeField] protected PivotVertical PivotVertical;
+        [SerializeField] protected PivotHorizontal PivotHorizontal;
 
         [Header("Tooltip Information")]
-        [SerializeField] private string header;
-        [TextArea(2, 6)][SerializeField] private string content;
+        [SerializeField] protected string header;
+        [TextArea(2, 6)][SerializeField] protected string content;
 
         public void DisplayTooltip()
         {
             TooltipManager.SetTooltipText(content, header);
-            TooltipManager.SetPivotPoint(PivotHorizontal, PivotVertical);
-            TooltipManager.DisplayTooltip(transform.position);
+            TooltipManager.SetPivotPoint(PivotHorizontal, PivotVertical, false);
+            TooltipManager.DisplayTooltip(transform.position, false);
         }
     }
 }

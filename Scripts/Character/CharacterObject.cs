@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Globalization;
 using PV3.ScriptableObjects.Game;
 using PV3.ScriptableObjects.Variables;
 using UnityEngine;
 
 namespace PV3.Character
 {
+    public enum CombatClass { Warrior, Wizard, Ranger }
     public abstract class CharacterObject : ScriptableObject
     {
         [System.Serializable]
@@ -19,13 +19,13 @@ namespace PV3.Character
         [Header("Base Information")]
         public new string name = string.Empty;
         public Sprite portraitSprite;
-
         public IntValue Level;
+        public CombatClass Class;
+
+        [Header("Stats")]
+        public AttributesObject Attributes;
         public IntValue MaxHealth;
         public IntValue CurrentHealth;
-
-        [Header("Attributes")]
-        public AttributesObject Attributes;
 
         [Header("Status Effects")]
         public CurrentStatusEffectObject StatusEffectObject;

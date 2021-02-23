@@ -62,7 +62,7 @@ namespace PV3.UI.Home
 
         public void SetPlayerPortraitIconAndName()
         {
-            var baseData = new BaseData(tempPlayerName, PortraitIconIndex.Value, 0, Player.Level.Value);
+            var baseData = new BaseData(tempPlayerName, PortraitIconIndex.Value, (int)Player.Class, Player.Level.Value);
             DataManager.UpdatePlayerBaseData(baseData);
             DataManager.SaveDataToJson();
         }

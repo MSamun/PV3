@@ -22,14 +22,8 @@ namespace PV3.Character.Spells
         [Header("Game Events")]
         [SerializeField] private GameEventObject OnSpellUseEvent;
 
-        private void Awake()
-        {
-            InitializeSpellButton();
-        }
-
         public void InitializeSpellButton()
         {
-            print("Executed!");
             spellButton.onClick.RemoveAllListeners();
             spellButton.onClick.AddListener(UseSpell);
             spellButton.GetComponent<Image>().sprite = Player.ListOfSpells[assignedSpellIndex].spell.sprite;

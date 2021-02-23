@@ -1,3 +1,4 @@
+using PV3.Character;
 using UnityEngine;
 
 namespace PV3.ScriptableObjects.Game
@@ -7,15 +8,40 @@ namespace PV3.ScriptableObjects.Game
     [CreateAssetMenu(fileName = "New List of Spells", menuName = "Game/List of Spells*")]
     public class ListOfSpellsObject : ScriptableObject
     {
-        public SpellObject[] ListOfSpellsInGame;
+        public SpellObject[] WarriorSpells;
+        [Header("")]
+        public SpellObject[] WizardSpells;
+        [Header("")]
+        public SpellObject[] RangerSpells;
 
-        public SpellObject FindSpellByID(int spellID)
+        public SpellObject FindSpellByID(int spellID, CombatClass type)
         {
-            for (var i = 0; i < ListOfSpellsInGame.Length; i++)
+            if (type == CombatClass.Warrior)
             {
-                if (ListOfSpellsInGame[i].spellID != spellID) continue;
+                for (var i = 0; i < WarriorSpells.Length; i++)
+                {
+                    if (WarriorSpells[i].spellID != spellID) continue;
 
-                return ListOfSpellsInGame[i];
+                    return WarriorSpells[i];
+                }
+            }
+            else if (type == CombatClass.Wizard)
+            {
+                for (var i = 0; i < WizardSpells.Length; i++)
+                {
+                    if (WizardSpells[i].spellID != spellID) continue;
+
+                    return WizardSpells[i];
+                }
+            }
+            else if (type == CombatClass.Ranger)
+            {
+                for (var i = 0; i < RangerSpells.Length; i++)
+                {
+                    if (RangerSpells[i].spellID != spellID) continue;
+
+                    return RangerSpells[i];
+                }
             }
 
             return null;
