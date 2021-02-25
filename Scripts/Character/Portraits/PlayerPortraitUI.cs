@@ -10,11 +10,11 @@ namespace PV3.Character.Portraits
 
         public override void PopulateUIComponents()
         {
-            var data = DataManager.LoadDataFromJson().PlayerData;
+            var data = DataManager.LoadDataFromJson().PlayerData.BaseData;
 
-            Icon.sprite = PortraitSprites.Icons[data.BaseData.PortraitID];
-            NameText.text = data.BaseData.Name;
-            LevelText.text = data.BaseData.Level.ToString();
+            Icon.sprite = PortraitSprites.Icons[data.PortraitID];
+            NameText.text = data.Name;
+            LevelText.text = data.Level.ToString();
         }
     }
 }

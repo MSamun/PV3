@@ -30,9 +30,6 @@ namespace PV3
             for (var i = 0; i < PlayerObject.ListOfSpells.Count; i++)
             {
                 PlayerObject.ListOfSpells[i].spell = ListOfSpellsObject.FindSpellByID(playerSpellJsonData[i].SpellID, (CombatClass)playerCombatClass);
-                if (PlayerObject.ListOfSpells[i].spell) continue;
-
-                print($"JSON file error. Unable to find Spell ID #{playerSpellJsonData[i].SpellID.ToString()} in {((CombatClass)playerCombatClass).ToString()} Spells.");
             }
 
             OnLoadedPlayerSpellsFromJsonEvent.Raise();

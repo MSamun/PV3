@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using PV3.Character;
 using UnityEngine;
 
@@ -44,6 +45,7 @@ namespace PV3.ScriptableObjects.Game
                 }
             }
 
+            Debug.LogError($"Error! Cannot find Spell #{spellID.ToString()} in the list of {type.ToString()} Spells.");
             return null;
         }
     }

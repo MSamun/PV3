@@ -11,7 +11,7 @@ namespace PV3.UI.Tooltip.Spell
 
         public void SetSpellText(string content, string cooldownAmount, string header = "")
         {
-            spellCooldownText.text = $"{cooldownAmount} Turns";
+            spellCooldownText.text = cooldownAmount;
             SetText(content, header);
         }
 
