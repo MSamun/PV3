@@ -1,4 +1,4 @@
-﻿using PV3.Character.Spells;
+﻿using PV3.Miscellaneous;
 using PV3.ScriptableObjects.Game;
 using PV3.ScriptableObjects.GameEvents;
 using PV3.ScriptableObjects.UI;

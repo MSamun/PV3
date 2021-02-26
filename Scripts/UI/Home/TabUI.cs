@@ -1,3 +1,4 @@
+using PV3.Miscellaneous;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -26,9 +27,9 @@ namespace PV3.UI.Home
         {
             for (var i = 0; i < TotalTabs.Length; i++)
             {
-                TotalTabs[i].TabUnfocus.gameObject.SetActive(index != i);
-                TotalTabs[i].TabFocus.gameObject.SetActive(index == i);
-                // totalTabs[i].TabPanel.gameObject.SetActive(index == i);
+                if (TotalTabs[i].TabUnfocus) TotalTabs[i].TabUnfocus.gameObject.SetActive(index != i);
+                if (TotalTabs[i].TabFocus) TotalTabs[i].TabFocus.gameObject.SetActive(index == i);
+                if (TotalTabs[i].TabPanel) TotalTabs[i].TabPanel.gameObject.SetActive(index == i);
             }
         }
 

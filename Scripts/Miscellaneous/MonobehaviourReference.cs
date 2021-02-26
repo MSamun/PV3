@@ -1,4 +1,4 @@
-﻿namespace PV3
+﻿namespace PV3.Miscellaneous
 {
     public abstract class MonobehaviourReference : UnityEngine.MonoBehaviour
     {

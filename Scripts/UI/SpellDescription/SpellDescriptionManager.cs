@@ -1,4 +1,3 @@
-using System;
 using PV3.Character;
 using PV3.ScriptableObjects.Game;
 using UnityEngine;
@@ -11,7 +10,9 @@ namespace PV3.UI.SpellDescription
 
         // When displaying Spell and Status Effect Tooltips, damage calculations are made and shown in the description.
         // We need a reference of the Character's Attribute information.
-        // i.e. displaying a Spell's Tooltip that deals 4 - 6 (+50% Strength) damage will show: [4 - 6](+3).
+        // Originally, the Spell Tooltip would have showed this: [4 - 6](+50% Strength). Assuming that the Character's Strength is equal to 7, it now shows this:
+        // [4 - 6](+3). It always rounds down.
+
         public static string SetDescription(SpellObject spell, AttributesObject attributes)
         {
             Attributes = attributes;
@@ -38,7 +39,7 @@ namespace PV3.UI.SpellDescription
                 else if (spell.components[i] is HealComponent)
                 {
                     // FORMAT: Heals for ([# - #] OR [##%])(+AttributeType) [of your maximum] health.
-                    localDesc += $"Heals for {valueDisplayModifierDesc}{attributeBonusDesc} {(spell.components[i].usePercentage ? "of maximum" : string.Empty)} health. ";
+                    localDesc += $"Heals for {valueDisplayModifierDesc}{attributeBonusDesc} {(spell.components[i].usePercentage ? "of maximum " : string.Empty)}health. ";
                 }
                 else if (spell.components[i] is StatusComponent)
                 {
@@ -54,6 +55,7 @@ namespace PV3.UI.SpellDescription
                     {
                         var typeDesc = string.Empty;
                         if (comp.StatusType == StatusType.DamageReduction)
+
                         {
                             typeDesc = "Damage Reduction";
                         }
@@ -124,7 +126,7 @@ namespace PV3.UI.SpellDescription
                 baseAttributeValue = Attributes.Armor;
             }
 
-            var finalAttributeValue = Mathf.RoundToInt(baseAttributeValue * percent);
+            var finalAttributeValue = Mathf.FloorToInt(baseAttributeValue * percent);
             return $"<color={colorText}>(+{finalAttributeValue + (isPercentHealth ? "%" : string.Empty)})</color>";
         }
     }

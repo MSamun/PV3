@@ -1,5 +1,4 @@
-﻿using PV3.Character.Spells;
-using PV3.ScriptableObjects.Game;
+﻿using PV3.ScriptableObjects.Game;
 using UnityEngine;
 
 namespace PV3.Character

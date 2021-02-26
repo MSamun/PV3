@@ -1,7 +1,6 @@
-using System;
 using UnityEngine;
 
-namespace PV3
+namespace PV3.Miscellaneous
 {
     public class DisplayAdPopup : MonobehaviourReference
     {
@@ -18,12 +17,12 @@ namespace PV3
             while (true)
             {
                 yield return new WaitForSeconds(popupTimer);
-                
+
                 print("Should execute right about now!");
                 gameObject.transform.GetChild(0).gameObject.SetActive(true);
 
                 yield return new WaitForSeconds(5f);
-                
+
                 gameObject.transform.GetChild(0).gameObject.SetActive(false);
             }
         }

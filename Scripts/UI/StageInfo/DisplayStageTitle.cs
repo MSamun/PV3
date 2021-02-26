@@ -1,4 +1,5 @@
-﻿using PV3.ScriptableObjects.Variables;
+﻿using PV3.Miscellaneous;
+using PV3.ScriptableObjects.Variables;
 using TMPro;
 using UnityEngine;
 

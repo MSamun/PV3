@@ -1,4 +1,3 @@
-using System.Runtime.InteropServices;
 using PV3.Character;
 using UnityEngine;
 
@@ -15,9 +14,9 @@ namespace PV3.ScriptableObjects.Game
         [Header("")]
         public SpellObject[] RangerSpells;
 
-        public SpellObject FindSpellByID(int spellID, CombatClass type)
+        public SpellObject FindSpellByID(int spellID, CombatClass combatClass)
         {
-            if (type == CombatClass.Warrior)
+            if (combatClass == CombatClass.Warrior)
             {
                 for (var i = 0; i < WarriorSpells.Length; i++)
                 {
@@ -26,7 +25,7 @@ namespace PV3.ScriptableObjects.Game
                     return WarriorSpells[i];
                 }
             }
-            else if (type == CombatClass.Wizard)
+            else if (combatClass == CombatClass.Wizard)
             {
                 for (var i = 0; i < WizardSpells.Length; i++)
                 {
@@ -35,7 +34,7 @@ namespace PV3.ScriptableObjects.Game
                     return WizardSpells[i];
                 }
             }
-            else if (type == CombatClass.Ranger)
+            else if (combatClass == CombatClass.Ranger)
             {
                 for (var i = 0; i < RangerSpells.Length; i++)
                 {
@@ -45,7 +44,19 @@ namespace PV3.ScriptableObjects.Game
                 }
             }
 
-            Debug.LogError($"Error! Cannot find Spell #{spellID.ToString()} in the list of {type.ToString()} Spells.");
+            Debug.LogError($"Error! Cannot find Spell #{spellID.ToString()} in the list of {combatClass.ToString()} Spells.");
+            return null;
+        }
+
+        public SpellObject FindSpellAtIndex(int index, CombatClass combatClass)
+        {
+            if (combatClass == CombatClass.Warrior && index < WarriorSpells.Length) return WarriorSpells[index];
+
+            if (combatClass == CombatClass.Wizard && index < WizardSpells.Length) return WizardSpells[index];
+
+            if (combatClass == CombatClass.Ranger && index < RangerSpells.Length) return RangerSpells[index];
+
+            Debug.LogError($"Error! Cannot find a {combatClass.ToString()} Spell at index #{index.ToString()}");
             return null;
         }
     }
