@@ -11,5 +11,10 @@ namespace PV3.ScriptableObjects.Variables
         {
             Value = 0;
         }
+
+        public void SetValue(int newValue)
+        {
+            Value = newValue;
+        }
     }
 }
