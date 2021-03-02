@@ -1,3 +1,4 @@
+using System;
 using PV3.Character;
 using PV3.Miscellaneous;
 using PV3.ScriptableObjects.Game;
@@ -28,7 +29,7 @@ namespace PV3.UI.Home
             SpellChosenSlotObject.GetComponent<SpellTooltipTrigger>().Character = Player;
         }
 
-        public void UpdatePlayerSpells()
+        public void PutNewSpellInLoadoutSlot()
         {
             Player.ListOfSpells[LoadoutIndexToPutNewSpell.Value].spell = spell;
         }

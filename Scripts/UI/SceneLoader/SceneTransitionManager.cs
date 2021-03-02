@@ -58,7 +58,6 @@ namespace PV3.UI.SceneLoader
         {
             yield return StartCoroutine(SceneTransition.GetComponent<SceneTransition>().LoadSceneFadeTransition());
 
-            // If the Scene you're transitioning to is the Title Scene or any Scene that does not require the use of the Load Scene.
             // Only use the Load Scene when the Scene you want to transition to is heavily populated; otherwise, just use the basic black fade transition.
             if (!useLoadScene || SceneIndex.Value == (int) SceneIndexes.Title)
                 SceneManager.LoadScene(SceneIndex.Value);

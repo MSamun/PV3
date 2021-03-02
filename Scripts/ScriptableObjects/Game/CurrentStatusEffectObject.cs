@@ -70,18 +70,6 @@ namespace PV3.ScriptableObjects.Game
             OnStatusEffectDeductedEvent.Raise();
         }
 
-        public void FindAllStatusEffectsInUseToDecrementTimer()
-        {
-            // Unique Status Effects (Regenerate, Linger, Stun) durations get deducted after applied.
-            // Non-Unique Status Effects (Damage, Block, Dodge) durations get deducted at the end of the Character's turn.
-            for (var i = 0; i < CurrentStatusEffects.Count; i++)
-            {
-                if (!CurrentStatusEffects[i].inUse || CurrentStatusEffects[i].isUnique) continue;
-                DecrementStatusEffectDuration(i);
-            }
-            OnStatusEffectDeductedEvent.Raise();
-        }
-
         public void DecrementStatusEffectDuration(int index)
         {
             CurrentStatusEffects[index].duration--;

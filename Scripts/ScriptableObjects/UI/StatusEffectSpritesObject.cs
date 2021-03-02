@@ -13,6 +13,7 @@ namespace PV3.ScriptableObjects.UI
         public Sprite dodgeBonusIcon;
         public Sprite damageReductionIcon;
         public Sprite criticalChanceIcon;
+        public Sprite lifestealIcon;
         public Sprite lingerIcon;
         public Sprite regenerateIcon;
         public Sprite stunIcon;

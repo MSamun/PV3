@@ -22,6 +22,7 @@ namespace PV3.Character.StatusEffects
             CharacterObject.StatusEffectObject.ResetStatusEffectList();
         }
 
+        // Referenced in the hierarchy by Game Events Listener Holder -> [Player/Enemy] Events -> On[Player/Enemy]StatusEffectDeducted.
         public void DisableUnusedPrefabs()
         {
             for (var i = 0; i < ListOfStatusEffectPrefabsDisplayed.Count; i++)
@@ -31,7 +32,7 @@ namespace PV3.Character.StatusEffects
             }
         }
 
-        // Referenced in the hierarchy by Event Listener Holder -> [Player/Enemy] Events -> On[Player/Enemy]StatusEffectApplied.
+        // Referenced in the hierarchy by Game Events Listener Holder -> [Player/Enemy] Events -> On[Player/Enemy]StatusEffectApplied.
         public void CheckIfHasAvailableStatusEffectPrefab()
         {
             if (CharacterObject.StatusEffectObject.CurrentStatusEffects.Count > ListOfStatusEffectPrefabsDisplayed.Count)
@@ -100,6 +101,9 @@ namespace PV3.Character.StatusEffects
                     break;
                 case StatusType.Critical:
                     icon.sprite = StatusEffectSpritesObject.criticalChanceIcon;
+                    break;
+                case StatusType.Lifesteal:
+                    icon.sprite = StatusEffectSpritesObject.lifestealIcon;
                     break;
                 case StatusType.Linger:
                     icon.sprite = StatusEffectSpritesObject.lingerIcon;

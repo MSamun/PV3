@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using PV3.Miscellaneous;
-using PV3.ScriptableObjects.Variables;
+﻿using PV3.Miscellaneous;
 using TMPro;
 using UnityEngine;
 
@@ -8,35 +6,20 @@ namespace PV3.UI.StageInfo
 {
     public class TrackTimeElapsed : MonobehaviourReference
     {
-        [SerializeField] private IntValue TimeElapsedInLevel = null;
-        [SerializeField] private TextMeshProUGUI timeElapsedText = null;
+        [SerializeField] private TextMeshProUGUI timeElapsedText;
 
-        private bool testingBool = false;
+        private float timer;
+
         private void Start()
         {
-            TimeElapsedInLevel.SetToZero();
-            timeElapsedText.text = string.Format("{0:0}:00", TimeElapsedInLevel.Value);
-
-            testingBool = true;
-            StartCoroutine(TrackCurrentTimeElapsedInLevel());
+            timer = 0;
+            timeElapsedText.text = "0:00";
         }
 
-        private IEnumerator TrackCurrentTimeElapsedInLevel()
+        private void FixedUpdate()
         {
-            float seconds = 0;
-            float minutes = 0;
-
-            while (testingBool)
-            {
-                yield return new WaitForSeconds(1f);
-                TimeElapsedInLevel.Value += 1;
-
-                seconds = Mathf.Floor(TimeElapsedInLevel.Value % 60);
-                minutes = Mathf.Floor(TimeElapsedInLevel.Value / 60) % 60;
-
-                timeElapsedText.text = string.Format("{0:0}:{1:00}", minutes, seconds);
-            }
-            yield return null;
+            timer += Time.fixedDeltaTime;
+            timeElapsedText.text = $"{Mathf.Floor(timer / 60) % 60:0}:{Mathf.Floor(timer % 60):00}";
         }
     }
 }

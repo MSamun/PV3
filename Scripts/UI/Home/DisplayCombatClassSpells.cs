@@ -35,6 +35,7 @@ namespace PV3.UI.Home
         public void UpdateSpellFocusAndEquippedIcons()
         {
             equipButton.interactable = false;
+
             for (var i = 0; i < amountOfSpells.Length; i++)
             {
                 SpellChosenIndex.Value = -1;

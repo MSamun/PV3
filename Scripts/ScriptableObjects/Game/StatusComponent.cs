@@ -2,7 +2,7 @@
 
 namespace PV3.ScriptableObjects.Game
 {
-    public enum StatusType { Random, Damage, Block, Dodge, DamageReduction, Critical, Linger, Regenerate, Stun}
+    public enum StatusType { Random, Damage, Block, Dodge, DamageReduction, Critical, Lifesteal, Linger, Regenerate, Stun}
 
     [CreateAssetMenu(fileName = "New Status Component", menuName = "Spell/Components/Status")]
     public class StatusComponent : SpellComponentObject
@@ -17,7 +17,8 @@ namespace PV3.ScriptableObjects.Game
 
         public StatusType ChooseRandomStatusType()
         {
-            return (StatusType)Random.Range(1, 6);
+            // minInclusive - maxExclusive
+            return (StatusType)Random.Range(1, 7);
         }
     }
 }

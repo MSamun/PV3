@@ -12,6 +12,7 @@ namespace PV3.ScriptableObjects.Game
         public int DamageBonus { get; private set; }
         public int CriticalBonus { get; private set; }
         public int DamageReductionBonus { get; private set; }
+        public int LifestealBonus { get; private set; }
 
         public void InfluenceBonus(bool isEffectDebuff = false, StatusType type = StatusType.Damage, int amount = 0)
         {
@@ -27,6 +28,8 @@ namespace PV3.ScriptableObjects.Game
                 DamageReductionBonus = isEffectDebuff ? DamageReductionBonus -= amount : DamageReductionBonus += amount;
             else if (type == StatusType.Critical)
                 CriticalBonus = isEffectDebuff ? CriticalBonus -= amount : CriticalBonus += amount;
+            else if (type == StatusType.Lifesteal)
+                LifestealBonus = isEffectDebuff ? LifestealBonus -= amount : LifestealBonus += amount;
         }
 
         // Whenever a new Stage starts, this gets called.
@@ -37,6 +40,7 @@ namespace PV3.ScriptableObjects.Game
             BlockBonus = 0;
             DamageReductionBonus = 0;
             CriticalBonus = 0;
+            LifestealBonus = 0;
         }
 
         // After a Status Effect's duration has reached zero, reset its bonus.
@@ -52,6 +56,8 @@ namespace PV3.ScriptableObjects.Game
                 DamageReductionBonus = 0;
             else if (type == StatusType.Critical)
                 CriticalBonus = 0;
+            else if (type == StatusType.Lifesteal)
+                LifestealBonus = 0;
         }
     }
 }

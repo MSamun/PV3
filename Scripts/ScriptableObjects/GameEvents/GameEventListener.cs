@@ -27,13 +27,13 @@ namespace PV3.ScriptableObjects.GameEvents
 
         private void OnEnable()
         {
-            for (int i = Events.Length - 1; i >= 0; i--)
+            for (var i = Events.Length - 1; i >= 0; i--)
                 Events[i].RegisterListener(this);
         }
 
         private void OnDisable()
         {
-            for (int i = Events.Length - 1; i >= 0; i--)
+            for (var i = Events.Length - 1; i >= 0; i--)
                 Events[i].UnRegisterListener(this);
         }
     }

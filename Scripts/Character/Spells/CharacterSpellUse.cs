@@ -132,10 +132,8 @@ namespace PV3.Character.Spells
 
                     PlaySpellVFXOnCaster(false);
 
-                    if (component.healPercentage > 0)
-                    {
-                        ApplyLifesteal(damage, component.healPercentage);
-                    }
+                    var lifestealAmount = component.healPercentage + Caster.GetLifestealBonus() / 100f;
+                    if (lifestealAmount > 0) ApplyLifesteal(damage, lifestealAmount);
                 }
             }
         }
@@ -143,11 +141,11 @@ namespace PV3.Character.Spells
         private int CalculateSpellDamage(SpellComponentObject component)
         {
             var baseDamage = component.usePercentage ? component.GetPercentageOfValue(Target.MaxHealth.Value) : component.GetRandomValueBetweenRange();
-            var attributeBonus = Mathf.RoundToInt(Caster.GetAttribute(component.attributeType) * component.attributePercentage);
-            var damageBonus = Mathf.RoundToInt((baseDamage + attributeBonus) * (Caster.GetDamageBonus() / 100f));
+            var attributeBonus = Mathf.FloorToInt(Caster.GetAttribute(component.attributeType) * component.attributePercentage);
+            var damageBonus = Mathf.FloorToInt((baseDamage + attributeBonus) * (Caster.GetDamageBonus() / 100f));
 
             var subtotalDamage = baseDamage + attributeBonus + damageBonus;
-            var damageReduction = Mathf.RoundToInt(subtotalDamage * (Target.GetDamageReduction() / 100f));
+            var damageReduction = Mathf.FloorToInt(subtotalDamage * (Target.GetDamageReduction() / 100f));
 
             var totalDamage = subtotalDamage - damageReduction;
 
@@ -164,7 +162,7 @@ namespace PV3.Character.Spells
 
         private void HealTargetFromBlockedAttack(int damage = 0)
         {
-            var healAmount = Mathf.RoundToInt(damage * 0.25f);
+            var healAmount = Mathf.FloorToInt(damage * 0.25f);
 
             // Spell dealing a low amount of damage led to having the character heal for zero; I think healing for a minimum of one is the better route to take.
             // Although, it should only heal for one when the damage dealt does not equal to zero.
@@ -178,7 +176,7 @@ namespace PV3.Character.Spells
 
         private void DamageCasterFromDodgedAttack(int damage = 0)
         {
-            var damageDealt = Mathf.RoundToInt(damage * 0.25f);
+            var damageDealt = Mathf.FloorToInt(damage * 0.25f);
 
             if (damageDealt <= 0 && damage != 0) damageDealt = 1;
             Caster.DeductHealth(damageDealt);
@@ -190,8 +188,10 @@ namespace PV3.Character.Spells
 
         private void ApplyLifesteal(int damage = 0, float percentage = 0f)
         {
-            var healAmount = Mathf.RoundToInt(damage * percentage);
+            var healAmount = Mathf.FloorToInt(damage * percentage);
 
+            // Spell dealing a low amount of damage led to having the character heal for zero; I think healing for a minimum of one is the better route to take.
+            // Although, it should only heal for one when the damage dealt does not equal to zero.
             if (healAmount <= 0 && damage != 0) healAmount = 1;
             Caster.AddHealth(healAmount);
 
@@ -202,8 +202,8 @@ namespace PV3.Character.Spells
         private void ExecuteHealComponent(HealComponent component)
         {
             var baseHeal = component.usePercentage ? component.GetPercentageOfValue(Caster.MaxHealth.Value) : component.GetRandomValueBetweenRange();
-            var attributeBonus = Mathf.RoundToInt(Caster.GetAttribute(component.attributeType) * component.attributePercentage);
-            var healBonus = Mathf.RoundToInt((baseHeal + attributeBonus) * (Caster.GetDamageBonus() / 100f));
+            var attributeBonus = Mathf.FloorToInt(Caster.GetAttribute(component.attributeType) * component.attributePercentage);
+            var healBonus = Mathf.FloorToInt((baseHeal + attributeBonus) * (Caster.GetDamageBonus() / 100f));
 
             var totalHeal = baseHeal + attributeBonus + healBonus;
 
@@ -220,7 +220,7 @@ namespace PV3.Character.Spells
         {
             if (!canStatusEffectBeApplied) return;
 
-            var attributeBonus = Mathf.RoundToInt(Caster.GetAttribute(component.attributeType) * component.attributePercentage);
+            var attributeBonus = Mathf.FloorToInt(Caster.GetAttribute(component.attributeType) * component.attributePercentage);
             var totalBonus = component.GetRandomValueBetweenRange() + attributeBonus;
 
             // Cannot self-inflict debuffs. Caster can only apply buffs to themselves and debuffs to Target.

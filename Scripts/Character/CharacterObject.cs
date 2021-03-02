@@ -34,10 +34,10 @@ namespace PV3.Character
         public List<Spells> ListOfSpells;
 
         //Sub-attributes of every character.
-        public float BlockChance { get; private set; }
-        public float DodgeChance { get; private set; }
-        public float DamageReduction { get; private set; }
-        public float CriticalChance { get; private set; }
+        private float BlockChance { get; set; }
+        private float DodgeChance { get; set; }
+        private float DamageReduction { get; set; }
+        private float CriticalChance { get; set; }
 
         public void InitializeHealthValues()
         {
@@ -47,8 +47,8 @@ namespace PV3.Character
 
         public void InitializeSubAttributes()
         {
-            DodgeChance = 2.5f;
-            BlockChance = 2.5f;
+            DodgeChance = 0;
+            BlockChance = 0;
             DamageReduction = Mathf.Abs(0.5f * Attributes.Armor);
             CriticalChance = Mathf.Abs(0.5f * Attributes.Dexterity);
         }
@@ -79,6 +79,12 @@ namespace PV3.Character
         {
             return StatusEffectObject.BonusObject.DamageBonus;
         }
+
+        public float GetLifestealBonus()
+        {
+            return StatusEffectObject.BonusObject.LifestealBonus;
+        }
+
         public int GetAttribute(AttributeType type)
         {
             if (type == AttributeType.Strength) return Attributes.Strength;
