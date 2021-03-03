@@ -1,4 +1,20 @@
-﻿using PV3.Miscellaneous;
+﻿// PV3 is a menu-based RPG game.
+// This file is part of the PV3 distribution (https://github.com/MSamun/PV3)
+// Copyright (C) 2021 Matthew Samun.
+//
+// This program is free software: you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by the Free
+// Software Foundation, version 3.
+//
+// This program is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of  MERCHANTABILITY or
+// FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+// more details.
+//
+// You should have received a copy of the GNU General Public License along with
+// this program. If not, see <http://www.gnu.org/licenses/>.
+
+using PV3.Miscellaneous;
 using PV3.ScriptableObjects.Variables;
 using TMPro;
 using UnityEngine;
@@ -14,9 +30,9 @@ namespace PV3.UI
         [Range(0.35f, 0.65f)] [SerializeField] private float barLerpSpeed;
 
         [Header("UI Components")]
-        [SerializeField] protected Slider slider = null;
-        [SerializeField] protected TextMeshProUGUI sliderText = null;
-        [SerializeField] private ParticleSystem sliderEdgeParticleSystem = null;
+        [SerializeField] protected Slider slider;
+        [SerializeField] protected TextMeshProUGUI sliderText;
+        [SerializeField] private ParticleSystem sliderEdgeParticleSystem;
 
         // Referenced by Event Listener Holder -> [Player/Enemy] Events -> On[Player/Enemy]AttributesCalculated's Game Event Listener.
         public void Initialize()
