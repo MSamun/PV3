@@ -36,7 +36,7 @@ namespace PV3.Settings
         {
             InitializeSliders();
 
-            var audioData = DataManager.LoadDataFromJson().AudioData;
+            var audioData = DataManager.LoadSettingsDataFromJson().AudioData;
             backgroundMusicSlider.value = audioData.BackgroundMusicVolume;
             buttonSfxSlider.value = audioData.ButtonSfxVolume;
         }
@@ -64,8 +64,7 @@ namespace PV3.Settings
         private void OnDestroy()
         {
             var data = new AudioData(backgroundMusicSlider.value, buttonSfxSlider.value);
-            DataManager.UpdateAudioData(data);
-            DataManager.SaveDataToJson();
+            DataManager.UpdateSettingsAudioData(data);
         }
     }
 }

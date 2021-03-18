@@ -37,12 +37,14 @@ namespace PV3.Serialization
 
         public void InitializePlayerSpells()
         {
-            var playerSpellJsonData = DataManager.LoadDataFromJson().PlayerData.SpellData;
-            var playerCombatClass = DataManager.LoadDataFromJson().PlayerData.BaseData.CombatClassID;
+            var playerData = DataManager.LoadPlayerDataFromJson();
 
-            for (var i = 0; i < PlayerObject.ListOfSpells.Count; i++)
+            PlayerObject.ListOfSpells[0].spell = ListOfSpellsObject.FindPotionByID(playerData.SpellData[0].SpellID);
+
+            // Start at index #1 cause index 0 is reserved for Potions.
+            for (var i = 1; i < PlayerObject.ListOfSpells.Count; i++)
             {
-                PlayerObject.ListOfSpells[i].spell = ListOfSpellsObject.FindSpellByID(playerSpellJsonData[i].SpellID, (CombatClass)playerCombatClass);
+                PlayerObject.ListOfSpells[i].spell = ListOfSpellsObject.FindSpellByID(playerData.SpellData[i].SpellID, (CombatClass)playerData.BaseData.CombatClassID);
             }
 
             OnLoadPlayerSpellsFromJsonEvent.Raise();

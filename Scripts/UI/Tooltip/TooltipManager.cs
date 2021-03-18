@@ -69,7 +69,5 @@ namespace PV3.UI.Tooltip
                 Instance.tooltip.SetPosition(position);
             }
         }
-
-
     }
 }

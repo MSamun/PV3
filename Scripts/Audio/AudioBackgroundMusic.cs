@@ -23,7 +23,7 @@ namespace PV3.Audio
     [RequireComponent(typeof(AudioSource))]
     public class AudioBackgroundMusic : MonobehaviourReference
     {
-        private AudioSource source;
+        private AudioSource backgroundMusicSource;
         private AudioClip backgroundMusicClip;
         private AudioClip victoryCueClip;
         private AudioClip defeatCueClip;
@@ -32,10 +32,10 @@ namespace PV3.Audio
 
         private void Awake()
         {
-            source = GetComponent<AudioSource>();
+            backgroundMusicSource = GetComponent<AudioSource>();
 
-            if (!source) return;
-            source.volume = DataManager.LoadDataFromJson().AudioData.BackgroundMusicVolume;
+            if (!backgroundMusicSource) return;
+            backgroundMusicSource.volume = DataManager.LoadSettingsDataFromJson().AudioData.BackgroundMusicVolume;
 
             StartCoroutine(LoopThroughMainBackgroundMusic());
         }
@@ -44,7 +44,7 @@ namespace PV3.Audio
         {
             var backgroundMusic = FindClip(BackgroundMusicType.Main);
 
-            while (source)
+            while (backgroundMusicSource)
             {
                 if (backgroundMusic.introClip && !backgroundMusic.playedIntroClip)
                 {
@@ -73,8 +73,8 @@ namespace PV3.Audio
         {
             if (!clip) return;
 
-            source.clip = clip;
-            source.Play();
+            backgroundMusicSource.clip = clip;
+            backgroundMusicSource.Play();
         }
 
         public void PlayDefeatClip()
@@ -94,14 +94,14 @@ namespace PV3.Audio
         private void StopMainBackgroundMusic()
         {
             StopCoroutine(LoopThroughMainBackgroundMusic());
-            source.Stop();
+            backgroundMusicSource.Stop();
         }
 
         // Referenced by GameObject: Audio -> BGM -> Event Listener. Gets executed when the OnChangedAudioBGM Event gets raised.
         // (Note: The OnChangedAudioBGM Event gets raised whenever the user changes the value of the BGM Slider in the Settings Scene.)
         public void AdjustSourceVolume()
         {
-            source.volume = AudioManager.BackgroundVolume;
+            backgroundMusicSource.volume = AudioManager.BackgroundVolume;
         }
     }
 }

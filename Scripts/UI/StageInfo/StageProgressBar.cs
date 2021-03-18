@@ -26,8 +26,8 @@ namespace PV3.UI.StageInfo
         [System.Serializable]
         private class ProgressBarPointers
         {
-            public GameObject pointerFocus = null;
-            public GameObject pointerUnfocus = null;
+            public GameObject pointerFocus;
+            public GameObject pointerUnfocus;
         }
 
         private DetermineCurrentEnemyInStage stageInfoScript;

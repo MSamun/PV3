@@ -15,11 +15,72 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 
 using PV3.Miscellaneous;
+using PV3.ScriptableObjects.Stages;
+using PV3.ScriptableObjects.Variables;
+using TMPro;
+using UnityEngine;
 
 namespace PV3.UI.LevelSelect
 {
     public class StageLevelUI : MonobehaviourReference
     {
+        private int index;
+        public StageInfoObject Stage;
+        [SerializeField] private IntValue StageIndex;
 
+        [Header("Locked UI Components")]
+        [SerializeField] private GameObject lockedPanelObject;
+        [SerializeField] private GameObject lockedPanelBossIcon;
+
+        [Header("Current UI Components")]
+        [SerializeField] private GameObject currentPanelObject;
+        [SerializeField] private GameObject currentPanelBossIcon;
+        [SerializeField] private TextMeshProUGUI currentPanelStageLevelText;
+
+        [Header("Completed UI Components")]
+        [SerializeField] private GameObject completedPanelObject;
+        [SerializeField] private GameObject completedPanelBossIcon;
+        [SerializeField] private TextMeshProUGUI completedPanelStageLevelText;
+
+        public void Initialize(StageInfoObject stage, int currentStage)
+        {
+            if (!stage)
+            {
+                gameObject.SetActive(false);
+                return;
+            }
+
+            Stage = stage;
+            index = stage.stageID;
+
+            CheckIfPanelNeedsBossIcon();
+            SetStageLevelText();
+            DetermineWhichPanelToDisplay(currentStage);
+        }
+
+        private void CheckIfPanelNeedsBossIcon()
+        {
+            lockedPanelBossIcon.gameObject.SetActive(Stage.hasBoss);
+            currentPanelBossIcon.gameObject.SetActive(Stage.hasBoss);
+            completedPanelBossIcon.gameObject.SetActive(Stage.hasBoss);
+        }
+
+        private void SetStageLevelText()
+        {
+            currentPanelStageLevelText.text = Stage.stageID.ToString();
+            completedPanelStageLevelText.text = Stage.stageID.ToString();
+        }
+
+        private void DetermineWhichPanelToDisplay(int currentStage)
+        {
+            lockedPanelObject.gameObject.SetActive(index > currentStage);
+            currentPanelObject.gameObject.SetActive(index == currentStage);
+            completedPanelObject.gameObject.SetActive(index < currentStage);
+        }
+
+        public void SetStageIndex()
+        {
+            StageIndex.Value = index - 1;
+        }
     }
 }

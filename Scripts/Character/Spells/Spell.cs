@@ -17,12 +17,14 @@
 using PV3.Miscellaneous;
 using PV3.ScriptableObjects.GameEvents;
 using PV3.ScriptableObjects.Variables;
+using PV3.UI.Tooltip.Spell;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace PV3.Character.Spells
 {
+    [RequireComponent(typeof(SpellTooltipTrigger))]
     public class Spell : MonobehaviourReference
     {
         [SerializeField] private int assignedSpellIndex;
@@ -31,7 +33,6 @@ namespace PV3.Character.Spells
 
         [Header("UI Components")]
         [SerializeField] private Button spellButton;
-        [SerializeField] private TextMeshProUGUI spellName;
         [SerializeField] private Image cooldownPanel;
         [SerializeField] private TextMeshProUGUI cooldownPanelText;
 
@@ -40,11 +41,13 @@ namespace PV3.Character.Spells
 
         public void InitializeSpellButton()
         {
+            if (!Player.ListOfSpells[assignedSpellIndex].spell) return;
+
             spellButton.onClick.RemoveAllListeners();
             spellButton.onClick.AddListener(UseSpell);
             spellButton.GetComponent<Image>().sprite = Player.ListOfSpells[assignedSpellIndex].spell.sprite;
 
-            if (spellName) spellName.text = Player.ListOfSpells[assignedSpellIndex].spell.name;
+            GetComponent<SpellTooltipTrigger>().Spell = Player.ListOfSpells[assignedSpellIndex].spell;
         }
 
         private void UseSpell()

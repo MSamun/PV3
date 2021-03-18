@@ -14,16 +14,29 @@
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
 
+using System;
 using PV3.Miscellaneous;
+using PV3.ScriptableObjects.GameEvents;
+using PV3.ScriptableObjects.Variables;
+using PV3.Serialization;
 using UnityEngine;
 
 namespace PV3.Managers
 {
     public class GameManager : MonobehaviourReference
     {
+        [SerializeField] private IntValue StageListIndex;
+        [SerializeField] private GameEventObject OnLoadedStageIndexFromJSONEvent;
+
         [Header("UI Panels")]
         [SerializeField] private GameObject VictoryScreen;
         [SerializeField] private GameObject DefeatScreen;
+
+        public void InitializeStageListIndexValueFromJson()
+        {
+            StageListIndex.Value = DataManager.LoadProgressionDataFromJson().StageData.ChosenStage - 1;
+            OnLoadedStageIndexFromJSONEvent.Raise();
+        }
 
         public void DisplayVictoryScreen()
         {
@@ -39,13 +52,11 @@ namespace PV3.Managers
         public void PauseGame()
         {
             Time.timeScale = 0;
-            print(Time.timeScale.ToString());
         }
 
         public void ResumeGame()
         {
             Time.timeScale = 1;
-            print(Time.timeScale.ToString());
         }
     }
 }

@@ -47,7 +47,10 @@ namespace PV3.UI.Home
             playerNameInput = PlayerNameInputObject.GetComponent<TMP_InputField>();
 
             PlayerPortraitImageComponent.sprite = Player.portraitSprite;
-            playerNameInput.text = Player.name;
+
+            var data = DataManager.LoadPlayerDataFromJson().BaseData;
+            playerNameInput.text = data.Name;
+            tempPlayerName = data.Name;
         }
 
         public void ShowAppropriatePortraitsDependingOnDropdown()
@@ -81,29 +84,21 @@ namespace PV3.UI.Home
         {
             var baseData = new BaseData(tempPlayerName, PortraitIconIndex.Value, (int)Player.Class, Player.Level.Value);
             DataManager.UpdatePlayerBaseData(baseData);
-            DataManager.SaveDataToJson();
         }
 
         private void OnEnable()
         {
-            PortraitIconIndex.Value = DataManager.LoadDataFromJson().PlayerData.BaseData.PortraitID;
+            PortraitIconIndex.Value = DataManager.LoadPlayerDataFromJson().BaseData.PortraitID;
             UpdateTemporaryPortraitIcon();
-            playerNameInput.text = DataManager.LoadDataFromJson().PlayerData.BaseData.Name;
+            playerNameInput.text = DataManager.LoadPlayerDataFromJson().BaseData.Name;
         }
 
         private void OnDisable()
         {
             var attributeData = new AttributeData(Player.Attributes.Strength, Player.Attributes.Dexterity, Player.Attributes.Constitution,
                 Player.Attributes.Intelligence, Player.Attributes.Armor);
+
             DataManager.UpdatePlayerAttributeData(attributeData);
-
-            for (var i = 0; i < Player.ListOfSpells.Count; i++)
-            {
-                var spellData = new SpellData(Player.ListOfSpells[i].spell.spellID);
-                DataManager.UpdatePlayerSpellData(spellData, i);
-            }
-
-            DataManager.SaveDataToJson();
         }
     }
 }

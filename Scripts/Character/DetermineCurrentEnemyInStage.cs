@@ -17,6 +17,7 @@
 using PV3.Miscellaneous;
 using PV3.ScriptableObjects.Stages;
 using PV3.ScriptableObjects.Variables;
+using PV3.Serialization;
 using UnityEngine;
 
 namespace PV3.Character
@@ -34,6 +35,7 @@ namespace PV3.Character
 
         public CharacterObject FindCurrentEnemy()
         {
+            stageListIndex.Value = DataManager.LoadProgressionDataFromJson().StageData.ChosenStage - 1;
             return listOfStagesObject.listOfStages[stageListIndex.Value].Stage.listOfEnemies[currentEnemyIndex.Value].enemy;
         }
     }

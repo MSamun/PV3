@@ -24,6 +24,10 @@ namespace PV3.ScriptableObjects.Game
     [CreateAssetMenu(fileName = "New List of Spells", menuName = "Game/List of Spells*")]
     public class ListOfSpellsObject : ScriptableObject
     {
+        // Temporary implementation. Will remove after adding Inventory and Equipment functionality.
+        public SpellObject[] Potions;
+
+        [Header("")]
         public SpellObject[] WarriorSpells;
         [Header("")]
         public SpellObject[] WizardSpells;
@@ -72,7 +76,19 @@ namespace PV3.ScriptableObjects.Game
 
             if (combatClass == CombatClass.Ranger && index < RangerSpells.Length) return RangerSpells[index];
 
-            Debug.LogError($"Error! Cannot find a {combatClass.ToString()} Spell at index #{index.ToString()}");
+            Debug.LogError($"Error! Cannot find a {combatClass.ToString()} Spell at Index #{index.ToString()}. Hiding Button in List of {combatClass.ToString()} Spells.");
+            return null;
+        }
+
+        public SpellObject FindPotionByID(int potionID)
+        {
+            for (var i = 0; i < Potions.Length; i++)
+            {
+                if (Potions[i].spellID != potionID) continue;
+                return Potions[i];
+            }
+
+            Debug.LogError($"Error! Cannot find Spell #{potionID.ToString()} in the list of Potions.");
             return null;
         }
     }

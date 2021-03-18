@@ -31,7 +31,7 @@ namespace PV3.ScriptableObjects.GameEvents
     [CreateAssetMenu(fileName = "New Game Event", menuName = "Game/Game Event")]
     public class GameEventObject : ScriptableObject
     {
-        public List<GameEventListener> listeners = new List<GameEventListener>();
+        private List<GameEventListener> listeners = new List<GameEventListener>();
 
         public void Raise()
         {

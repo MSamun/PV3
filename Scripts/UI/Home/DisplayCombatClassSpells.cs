@@ -42,8 +42,7 @@ namespace PV3.UI.Home
 
             for (var i = 0; i < amountOfSpells.Length; i++)
             {
-                // Since Health Potion Spell is in the list of Spells, need to skip it. Will change it in the future.
-                amountOfSpells[i].Initialize(ListOfSpellsObject.FindSpellAtIndex(i + 1, spellType));
+                amountOfSpells[i].Initialize(ListOfSpellsObject.FindSpellAtIndex(i, spellType));
                 amountOfSpells[i].DisplayEquippedIcon(CheckIfSpellIsEquipped(amountOfSpells[i].Spell));
             }
         }

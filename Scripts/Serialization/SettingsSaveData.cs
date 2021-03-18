@@ -1,4 +1,4 @@
-﻿// PV3 is a menu-based RPG game.
+// PV3 is a menu-based RPG game.
 // This file is part of the PV3 distribution (https://github.com/MSamun/PV3)
 // Copyright (C) 2021 Matthew Samun.
 //
@@ -14,28 +14,29 @@
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
 
-using System.Collections.Generic;
-using PV3.Character;
-using UnityEngine;
-
-namespace PV3.ScriptableObjects.Stages
+namespace PV3.Serialization
 {
-    [CreateAssetMenu(fileName = "New Stage", menuName = "Stage Select/New Stage")]
-    public class StageInfoObject : ScriptableObject
+    [System.Serializable]
+    public class SettingsSaveData
     {
-        [System.Serializable]
-        public class StageInformation
+        public AudioData AudioData;
+
+        public SettingsSaveData()
         {
-            public EnemyObject enemy;
-            public int level;
+            AudioData = new AudioData();
         }
+    }
 
-        [Header("Basic Stage Information")]
-        public int stageID;
-        public GameObject stageBackground;
-        public bool hasBoss;
+    [System.Serializable]
+    public class AudioData
+    {
+        public float BackgroundMusicVolume;
+        public float ButtonSfxVolume;
 
-        [Header("List of Enemies in Stage")]
-        public List<StageInformation> listOfEnemies = new List<StageInformation>();
+        public AudioData(float backgroundMusicVolume = 1f, float buttonSfxVolume = 1f)
+        {
+            BackgroundMusicVolume = backgroundMusicVolume;
+            ButtonSfxVolume = buttonSfxVolume;
+        }
     }
 }

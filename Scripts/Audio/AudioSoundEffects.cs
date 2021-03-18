@@ -23,36 +23,36 @@ namespace PV3.Audio
     [RequireComponent(typeof(AudioSource))]
     public class AudioSoundEffects : MonobehaviourReference
     {
-        private AudioSource source;
+        private AudioSource soundEffectSource;
         [SerializeField] private AudioClip buttonSfx;
 
         private void Awake()
         {
-            source = GetComponent<AudioSource>();
+            soundEffectSource = GetComponent<AudioSource>();
 
-            if (!source) return;
-            source.volume = DataManager.LoadDataFromJson().AudioData.ButtonSfxVolume;
+            if (!soundEffectSource) return;
+            soundEffectSource.volume = DataManager.LoadSettingsDataFromJson().AudioData.ButtonSfxVolume;
         }
 
         public void PlayButtonSFX()
         {
-            if (!source || !buttonSfx) return;
+            if (!soundEffectSource || !buttonSfx) return;
 
-            source.clip = buttonSfx;
-            source.Play();
+            soundEffectSource.clip = buttonSfx;
+            soundEffectSource.Play();
         }
 
         public void PlaySpellSFX()
         {
-            if (!source || !AudioManager.SpellSFX) return;
+            if (!soundEffectSource || !AudioManager.SpellSFX) return;
 
-            source.clip = AudioManager.SpellSFX;
-            source.Play();
+            soundEffectSource.clip = AudioManager.SpellSFX;
+            soundEffectSource.Play();
         }
 
         public void AdjustSourceVolume()
         {
-            source.volume = AudioManager.SoundEffectVolume;
+            soundEffectSource.volume = AudioManager.SoundEffectVolume;
         }
     }
 }

@@ -25,6 +25,7 @@ namespace PV3.UI.Tooltip
     {
         private RectTransform rectTransform;
 
+        [SerializeField] protected bool isSpellTooltip;
         [SerializeField] protected int characterWrapLimit;
 
         [Header("UI Components")]
@@ -40,7 +41,15 @@ namespace PV3.UI.Tooltip
         private void Update()
         {
             if (Input.touchCount <= 0) return;
-            gameObject.SetActive(false);
+
+            if (!isSpellTooltip) gameObject.SetActive(false);
+            else
+            {
+                if (Input.GetTouch(0).phase == TouchPhase.Ended )
+                {
+                    gameObject.SetActive(false);
+                }
+            }
         }
 
         public void SetText(string content, string header = "")

@@ -26,7 +26,7 @@ namespace PV3.Character.Portraits
 
         public override void PopulateUIComponents()
         {
-            var data = DataManager.LoadDataFromJson().PlayerData.BaseData;
+            var data = DataManager.LoadPlayerDataFromJson().BaseData;
 
             Icon.sprite = PortraitSprites.Icons[data.PortraitID];
             NameText.text = data.Name;

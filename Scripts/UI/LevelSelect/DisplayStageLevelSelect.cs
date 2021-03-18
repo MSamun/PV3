@@ -14,12 +14,30 @@
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
 
+using System;
 using PV3.Miscellaneous;
+using PV3.ScriptableObjects.Stages;
+using PV3.ScriptableObjects.Variables;
+using PV3.Serialization;
+using UnityEngine;
 
 namespace PV3.UI.LevelSelect
 {
     public class DisplayStageLevelSelect : MonobehaviourReference
     {
+        private StageLevelUI[] amountOfStages;
 
+        [SerializeField] private StageListObject ListOfStagesObject;
+        [SerializeField] private IntValue StageIndex;
+        private void Awake()
+        {
+            amountOfStages = GetComponentsInChildren<StageLevelUI>();
+            var currentStageIndex = DataManager.LoadProgressionDataFromJson().StageData.HighestStageCompleted;
+
+            for (var i = 0; i < amountOfStages.Length; i++)
+            {
+                amountOfStages[i].Initialize(ListOfStagesObject.listOfStages[i].Stage, currentStageIndex);
+            }
+        }
     }
 }

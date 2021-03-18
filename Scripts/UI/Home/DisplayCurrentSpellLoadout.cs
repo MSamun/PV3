@@ -42,6 +42,8 @@ namespace PV3.UI.Home
         {
             for (var i = 0; i < SpellObjects.Length; i++)
             {
+                if (!PlayerObject.ListOfSpells[i + 1].spell) continue;
+
                 SpellObjects[i].GetComponent<SpellTooltipTrigger>().Spell = PlayerObject.ListOfSpells[i + 1].spell;
                 SpellObjects[i].GetComponentInChildren<Button>(true).GetComponent<Image>().sprite = PlayerObject.ListOfSpells[i + 1].spell.sprite;
             }
@@ -51,11 +53,9 @@ namespace PV3.UI.Home
         {
             for (var i = 0; i < PlayerObject.ListOfSpells.Count; i++)
             {
-                var spellData = new SpellData(PlayerObject.ListOfSpells[i].spell.spellID);
-                DataManager.UpdatePlayerSpellData(spellData, i);
+                if (!PlayerObject.ListOfSpells[i].spell) continue;
+                DataManager.UpdatePlayerSpellData(PlayerObject.ListOfSpells[i].spell.spellID, i);
             }
-
-            DataManager.SaveDataToJson();
         }
     }
 }

@@ -31,6 +31,12 @@ namespace PV3.UI.SpellDescription
 
         public static string SetDescription(SpellObject spell, AttributesObject attributes)
         {
+            if (!spell || !attributes)
+            {
+                Debug.LogError($"Error! SpellObject or AttributesObject is NULL. SPELL: {spell}, ATTRIBUTES: {attributes}");
+                return string.Empty;
+            }
+
             Attributes = attributes;
             var localDesc = string.Empty;
 
@@ -70,16 +76,9 @@ namespace PV3.UI.SpellDescription
                     // Damage, Block, Dodge, DamageReduction, and Critical StatusTypes.
                     if (!comp.isUnique)
                     {
-                        var typeDesc = string.Empty;
-                        if (comp.StatusType == StatusType.DamageReduction)
-
-                        {
-                            typeDesc = "Damage Reduction";
-                        }
-                        else
-                        {
-                            typeDesc = $"{comp.StatusType.ToString()}{(comp.StatusType != StatusType.Damage ? " Chance" : string.Empty)}";
-                        }
+                        string typeDesc;
+                        typeDesc = comp.StatusType == StatusType.DamageReduction ? "Damage Reduction" :
+                            $"{comp.StatusType.ToString()}{(comp.StatusType != StatusType.Damage ? " Chance" : string.Empty)}";
 
                         // FORMAT: [Increases your/Decreases the target's] [StatusType] by [##%](+AttributeType) for [#] turn[s].
                         localDesc += $"{nonUniqueStatusEffectDesc} {typeDesc} by {valueDisplayModifierDesc}{attributeBonusDesc} for {turnDesc}. ";

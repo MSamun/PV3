@@ -23,18 +23,18 @@ namespace PV3.UI.StageInfo
 {
     public class DisplayStageTitle : MonobehaviourReference
     {
-        private TextMeshProUGUI _title = null;
+        private TextMeshProUGUI title;
 
         [Header("Stage List Index")]
-        [SerializeField] private IntValue StageListIndex = null;
+        [SerializeField] private IntValue StageListIndex;
 
-        private void Awake()
+        public void Initialize()
         {
-            _title = GetComponentInChildren<TextMeshProUGUI>(true);
+            title = GetComponentInChildren<TextMeshProUGUI>(true);
 
-            if (_title)
+            if (title)
                 // Account for element index starting at 0.
-                _title.text = $"Stage {(StageListIndex.Value < 9 ? "0" : string.Empty)}{StageListIndex.Value + 1}";
+                title.text = $"Stage {(StageListIndex.Value < 9 ? "0" : string.Empty)}{(StageListIndex.Value + 1).ToString()}";
             else
                 Debug.LogError("DisplayStageTitle.cs does not have a reference to the TextMeshProUGUI component. Aborting...");
         }

@@ -29,7 +29,7 @@ namespace PV3.UI.StageInfo
         [SerializeField] private GameObject nonBossProgressBar;
         [SerializeField] private GameObject bossProgressBar;
 
-        private void Awake()
+        public void Initialize()
         {
             stageInfo = GetComponent<DetermineCurrentEnemyInStage>();
 

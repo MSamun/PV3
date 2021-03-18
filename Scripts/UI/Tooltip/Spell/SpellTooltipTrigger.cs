@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
 
+using System;
 using PV3.Miscellaneous;
 using PV3.ScriptableObjects.Game;
 using PV3.UI.SpellDescription;
@@ -23,9 +24,7 @@ namespace PV3.UI.Tooltip.Spell
 {
     public class SpellTooltipTrigger : MonobehaviourReference
     {
-
         public SpellObject Spell;
-
         public Character.CharacterObject Character;
 
         [Header("Pivot Points")]
@@ -34,6 +33,12 @@ namespace PV3.UI.Tooltip.Spell
 
         public void DisplayTooltip()
         {
+            if (!Spell || !Character)
+            {
+                Debug.LogError($"SpellObject or CharacterObject is NULL. SPELL: {Spell}, CHARACTER: {Character}");
+                return;
+            }
+
             var spellDesc = SpellDescriptionManager.SetDescription(Spell, Character.Attributes);
             var cooldownDesc = $"{Spell.totalCooldown.ToString()} turn{(Spell.totalCooldown > 1 ? "s" : string.Empty)}";
 
