@@ -15,12 +15,12 @@ namespace PV3.Serialization
     public class StageData
     {
         public int ChosenStage;
-        public int HighestStageCompleted;
+        public int HighestStageAvailable;
 
-        public StageData(int chosenStage = 1, int highestStageCompleted = 1)
+        public StageData(int chosenStage = 1, int highestStageAvailable = 1)
         {
             ChosenStage = chosenStage;
-            HighestStageCompleted = highestStageCompleted;
+            HighestStageAvailable = highestStageAvailable;
         }
     }
 }

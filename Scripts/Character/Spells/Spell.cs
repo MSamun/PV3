@@ -50,7 +50,7 @@ namespace PV3.Character.Spells
             GetComponent<SpellTooltipTrigger>().Spell = Player.ListOfSpells[assignedSpellIndex].spell;
         }
 
-        private void UseSpell()
+        public void UseSpell()
         {
             SpellUsedIndex.Value = assignedSpellIndex;
             InitializeCooldown();

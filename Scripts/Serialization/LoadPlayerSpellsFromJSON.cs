@@ -33,6 +33,7 @@ namespace PV3.Serialization
         private void OnEnable()
         {
             InitializePlayerSpells();
+            PlayerObject.name = DataManager.LoadPlayerDataFromJson().BaseData.Name;
         }
 
         public void InitializePlayerSpells()

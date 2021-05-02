@@ -34,7 +34,7 @@ namespace PV3.ScriptableObjects.Game
         [Header("Combat Information")]
 
         public SpellType spellType;
-        [Range(1, 6)] public int totalCooldown;
+        [Range(1, 10)] public int totalCooldown;
 
         [Header("Visuals")]
         public AudioClip SfxClip;

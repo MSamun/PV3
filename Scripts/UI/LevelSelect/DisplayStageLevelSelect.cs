@@ -32,7 +32,7 @@ namespace PV3.UI.LevelSelect
         private void Awake()
         {
             amountOfStages = GetComponentsInChildren<StageLevelUI>();
-            var currentStageIndex = DataManager.LoadProgressionDataFromJson().StageData.HighestStageCompleted;
+            var currentStageIndex = DataManager.LoadProgressionDataFromJson().StageData.HighestStageAvailable;
 
             for (var i = 0; i < amountOfStages.Length; i++)
             {

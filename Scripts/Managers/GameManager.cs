@@ -41,6 +41,9 @@ namespace PV3.Managers
         public void DisplayVictoryScreen()
         {
             VictoryScreen.gameObject.SetActive(true);
+            var newHighestStage = DataManager.LoadProgressionDataFromJson().StageData.ChosenStage;
+            var data = new StageData(newHighestStage, newHighestStage + 1);
+            DataManager.UpdateProgressionStageData(data);
         }
 
         public void DisplayDefeatScreen()

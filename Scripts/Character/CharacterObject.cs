@@ -57,7 +57,7 @@ namespace PV3.Character
 
         public void InitializeHealthValues()
         {
-            MaxHealth.Value = 5 * Attributes.Constitution + 2 * Level.Value;
+            MaxHealth.Value = 6 * Attributes.Constitution + 3 * Level.Value;
             CurrentHealth.Value = MaxHealth.Value;
         }
 

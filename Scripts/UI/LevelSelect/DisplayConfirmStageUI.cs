@@ -83,7 +83,7 @@ namespace PV3.UI.LevelSelect
 
         public void SaveStageIndexToJson()
         {
-            var highestStageCompleted = DataManager.LoadProgressionDataFromJson().StageData.HighestStageCompleted;
+            var highestStageCompleted = DataManager.LoadProgressionDataFromJson().StageData.HighestStageAvailable;
             var stageData = new StageData(StageIndex.Value + 1, highestStageCompleted);
 
             DataManager.UpdateProgressionStageData(stageData);
