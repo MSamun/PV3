@@ -25,18 +25,38 @@ namespace PV3.Character
     {
         [Header("---------- ATTRIBUTES ----------")]
         [SerializeField] [Range(1, 200)] private int strength;
-        public int Strength => strength;
+        public int Strength
+        {
+            get => strength;
+            set => strength = value;
+        }
 
         [SerializeField] [Range(1, 200)] private int dexterity;
-        public int Dexterity => dexterity;
+        public int Dexterity
+        {
+            get => dexterity;
+            set => dexterity = value;
+        }
 
         [SerializeField] [Range(1, 200)] private int constitution;
-        public int Constitution => constitution;
+        public int Constitution
+        {
+            get => constitution;
+            set => constitution = value;
+        }
 
         [SerializeField] [Range(1, 200)] private int intelligence;
-        public int Intelligence => intelligence;
+        public int Intelligence
+        {
+            get => intelligence;
+            set => intelligence = value;
+        }
 
         [SerializeField] [Range(1, 200)] private int armor;
-        public int Armor => armor;
+        public int Armor
+        {
+            get => armor;
+            set => armor = value;
+        }
     }
 }

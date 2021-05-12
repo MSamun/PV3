@@ -50,10 +50,10 @@ namespace PV3.Character
         public List<Spells> ListOfSpells;
 
         //Sub-attributes of every character.
-        private float BlockChance { get; set; }
-        private float DodgeChance { get; set; }
-        private float DamageReduction { get; set; }
-        private float CriticalChance { get; set; }
+        public float BlockChance { get; set; }
+        public float DodgeChance { get; set; }
+        public float DamageReduction { get; set; }
+        public float CriticalChance { get; set; }
 
         public void InitializeHealthValues()
         {

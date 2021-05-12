@@ -75,13 +75,9 @@ namespace PV3.UI.Home
         public void SetSpellToEquip(int index)
         {
             var isAlreadyEquipped = CheckIfSpellIsEquipped(amountOfSpells[index].Spell);
-            equipButton.interactable = !isAlreadyEquipped;
+            var isSameCombatClass = Player.Class == amountOfSpells[index].Spell.combatClass;
 
-            if (isAlreadyEquipped)
-            {
-                UpdateSpellFocusAndEquippedIcons();
-                return;
-            }
+            equipButton.interactable = !isAlreadyEquipped && isSameCombatClass;
             amountOfSpells[index].SetSpellToEquip();
         }
 

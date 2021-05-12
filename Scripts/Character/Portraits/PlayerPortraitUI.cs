@@ -32,5 +32,17 @@ namespace PV3.Character.Portraits
             NameText.text = data.Name;
             LevelText.text = data.Level.ToString();
         }
+
+        protected override void PopulatePlayerAttributesObjectFromJson()
+        {
+            var data = DataManager.LoadPlayerDataFromJson().AttributeData;
+
+            Character.Class = (CombatClass) DataManager.LoadPlayerDataFromJson().BaseData.CombatClassID;
+            Character.Attributes.Strength = data.Strength;
+            Character.Attributes.Dexterity = data.Dexterity;
+            Character.Attributes.Constitution = data.Constitution;
+            Character.Attributes.Intelligence = data.Intelligence;
+            Character.Attributes.Armor = data.Armor;
+        }
     }
 }

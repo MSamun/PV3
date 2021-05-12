@@ -37,10 +37,12 @@ namespace PV3.Character.Portraits
         protected virtual void Start()
         {
             PopulateUIComponents();
+            PopulatePlayerAttributesObjectFromJson();
             InitializeCharacterValues();
         }
 
         public virtual void PopulateUIComponents() { }
+        protected virtual void PopulatePlayerAttributesObjectFromJson() { }
 
         protected void InitializeCharacterValues()
         {

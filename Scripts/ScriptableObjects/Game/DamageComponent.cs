@@ -22,9 +22,6 @@ namespace PV3.ScriptableObjects.Game
     public class DamageComponent : SpellComponentObject
     {
         [Header("")]
-        public WeaponType WeaponType;
-
-        [Header("")]
         [Range(0, 1)] public float healPercentage;
         [Range(1, 4)] public int numberOfAttacks = 1;
     }

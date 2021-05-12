@@ -64,7 +64,7 @@ namespace PV3.ScriptableObjects.Game
                 }
             }
 
-            Debug.LogError($"Error! Cannot find Spell #{spellID.ToString()} in the list of {combatClass.ToString()} Spells.");
+            Debug.LogError($"Error! Cannot find Spell with ID #{spellID.ToString()} in the list of {combatClass.ToString()} Spells. Maybe you are searching in the wrong List of Spells?");
             return null;
         }
 
@@ -88,7 +88,7 @@ namespace PV3.ScriptableObjects.Game
                 return Potions[i];
             }
 
-            Debug.LogError($"Error! Cannot find Spell #{potionID.ToString()} in the list of Potions.");
+            Debug.LogError($"Error! Cannot find Potion with ID #{potionID.ToString()} in the list of Potions.");
             return null;
         }
     }
