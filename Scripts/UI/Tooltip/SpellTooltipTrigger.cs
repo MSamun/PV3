@@ -17,7 +17,6 @@
 using PV3.Miscellaneous;
 using PV3.ScriptableObjects.Character;
 using PV3.ScriptableObjects.Spells;
-using PV3.UI.SpellDescription;
 using UnityEngine;
 
 namespace PV3.UI.Tooltip
@@ -45,23 +44,6 @@ namespace PV3.UI.Tooltip
 
             TooltipController.InitializeTooltip(Spell.name, contentDesc, cooldownDesc, Spell.staminaCost.ToString());
             TooltipController.InitializePivotPointAndPosition(PivotHorizontal, PivotVertical, transform.position);
-        }
-
-        // OBSOLETE
-        public void DisplayTooltip()
-        {
-            if (!Spell || !Character)
-            {
-                Debug.LogError($"SpellObject or CharacterObject is NULL. SPELL: {Spell}, CHARACTER: {Character}");
-                return;
-            }
-
-            var spellDesc = SpellDescriptionManager.SetDescription(Spell, Character.Attributes);
-            var cooldownDesc = $"{Spell.totalCooldown.ToString()} turn{(Spell.totalCooldown > 1 ? "s" : string.Empty)}";
-
-            TooltipManager.SetTooltipText(spellDesc, cooldownDesc, Spell.name);
-            TooltipManager.SetPivotPoint(PivotHorizontal, PivotVertical, true);
-            TooltipManager.DisplayTooltip(transform.position, true);
         }
     }
 }
