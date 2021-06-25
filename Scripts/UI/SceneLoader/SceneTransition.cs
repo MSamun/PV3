@@ -22,8 +22,8 @@ namespace PV3.UI.SceneLoader
 {
     public class SceneTransition : MonobehaviourReference
     {
-        [SerializeField] private Animator transitionAnim = null;
-        [SerializeField] private float transitionTime = 0;
+        [SerializeField] private Animator transitionAnim;
+        [SerializeField] private float transitionTime;
 
         public IEnumerator LoadSceneFadeTransition()
         {

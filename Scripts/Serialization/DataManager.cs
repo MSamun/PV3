@@ -21,13 +21,12 @@ namespace PV3.Serialization
 {
     public static class DataManager
     {
-        private static PlayerSaveData playerSaveData;
-        private static SettingsSaveData settingsSaveData;
-        private static ProgressionSaveData progressionSaveData;
-
         private const string PLAYER_DATA_FILE = "playerData.json";
         private const string SETTINGS_DATA_FILE = "settingsData.json";
         private const string PROGRESSION_DATA_FILE = "progressionData.json";
+        private static PlayerSaveData playerSaveData;
+        private static SettingsSaveData settingsSaveData;
+        private static ProgressionSaveData progressionSaveData;
 
         private static string dataPath;
 

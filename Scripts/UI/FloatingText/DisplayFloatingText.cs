@@ -14,14 +14,16 @@
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
 
+using System;
+using System.Collections.Generic;
 using PV3.Miscellaneous;
+using PV3.ScriptableObjects.UI;
 using TMPro;
 using UnityEngine;
-using PV3.ScriptableObjects.UI;
 
 namespace PV3.UI.FloatingText
 {
-    [System.Serializable]
+    [Serializable]
     public class PreInstantiatedFloatingTextPrefabs
     {
         public GameObject Prefab;
@@ -36,11 +38,12 @@ namespace PV3.UI.FloatingText
 
     public class DisplayFloatingText : MonobehaviourReference
     {
-        private Transform floatingTextSpawnPosition;
         [SerializeField] private FloatingTextObject FloatingTextObject;
 
         [Header("")]
-        [SerializeField] private System.Collections.Generic.List<PreInstantiatedFloatingTextPrefabs> FloatingTextPrefabs = new System.Collections.Generic.List<PreInstantiatedFloatingTextPrefabs>();
+        [SerializeField] private List<PreInstantiatedFloatingTextPrefabs> FloatingTextPrefabs = new List<PreInstantiatedFloatingTextPrefabs>();
+
+        private Transform floatingTextSpawnPosition;
 
         private void Start()
         {
@@ -81,13 +84,9 @@ namespace PV3.UI.FloatingText
             }
 
             if (index == -1)
-            {
                 InstantiateNewPrefab();
-            }
             else
-            {
-               InitializePrefabValues(index);
-            }
+                InitializePrefabValues(index);
         }
 
         private void InstantiateNewPrefab()

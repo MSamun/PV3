@@ -21,21 +21,29 @@ namespace PV3.UI.Home
 {
     public class HelpUI : MonobehaviourReference
     {
-        private int currentPageIndex;
-
         [Header("Page Buttons")]
         [SerializeField] private GameObject previousPageButton;
+
         [SerializeField] private GameObject nextPageButton;
 
         [Header("Page Indicators")]
         [SerializeField] private GameObject pageIndicatorLeft;
+
         [SerializeField] private GameObject pageIndicatorMiddle;
         [SerializeField] private GameObject pageIndicatorRight;
 
         [Header("Information Panels")]
         [SerializeField] private GameObject spellsAndSkillsInfoPanel;
+
         [SerializeField] private GameObject experienceInfoPanel;
         [SerializeField] private GameObject attributesAndSkillPointsInfoPanel;
+        private int currentPageIndex;
+
+        private void OnEnable()
+        {
+            currentPageIndex = 0;
+            DisplayAppropriateInfoPanel();
+        }
 
         public void NextPage()
         {
@@ -67,12 +75,6 @@ namespace PV3.UI.Home
             spellsAndSkillsInfoPanel.gameObject.SetActive(currentPageIndex == 0);
             experienceInfoPanel.gameObject.SetActive(currentPageIndex == 1);
             attributesAndSkillPointsInfoPanel.gameObject.SetActive(currentPageIndex == 2);
-        }
-
-        private void OnEnable()
-        {
-            currentPageIndex = 0;
-            DisplayAppropriateInfoPanel();
         }
     }
 }

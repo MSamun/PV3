@@ -23,8 +23,8 @@ namespace PV3.Audio
     [RequireComponent(typeof(AudioSource))]
     public class AudioSoundEffects : MonobehaviourReference
     {
-        private AudioSource soundEffectSource;
         [SerializeField] private AudioClip buttonSfx;
+        private AudioSource soundEffectSource;
 
         private void Awake()
         {
@@ -44,9 +44,9 @@ namespace PV3.Audio
 
         public void PlaySpellSFX()
         {
-            if (!soundEffectSource || !AudioManager.SpellSFX) return;
+            if (!soundEffectSource || !AudioManager.SpellSfx) return;
 
-            soundEffectSource.clip = AudioManager.SpellSFX;
+            soundEffectSource.clip = AudioManager.SpellSfx;
             soundEffectSource.Play();
         }
 

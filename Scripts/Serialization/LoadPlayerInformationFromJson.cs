@@ -14,51 +14,40 @@
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
 
-using PV3.Character;
 using PV3.Miscellaneous;
+using PV3.ScriptableObjects.Character;
 using PV3.ScriptableObjects.Game;
-using PV3.ScriptableObjects.GameEvents;
+using PV3.ScriptableObjects.Spells;
+using PV3.ScriptableObjects.UI;
 using UnityEngine;
 
 namespace PV3.Serialization
 {
     public class LoadPlayerInformationFromJson : MonobehaviourReference
     {
-        [SerializeField] private PlayerObject PlayerObject;
-        [SerializeField] private ListOfSpellsObject ListOfSpellsObject;
+        [SerializeField] private PlayerObject Player;
+        [SerializeField] private ListOfSpellsObject ListOfSpells;
+        [SerializeField] private PortraitIconSpritesObject PortraitSprites;
 
         [Header("Game Event")]
         [SerializeField] private GameEventObject OnLoadPlayerSpellsFromJsonEvent;
 
-        private void Awake()
+        public void InitializePlayerBaseInformation()
         {
-            InitializePlayerBaseInformation();
-        }
+            var data = DataManager.LoadPlayerDataFromJson().BaseData;
 
-        private void OnEnable()
-        {
-            InitializePlayerSpells();
-        }
-
-        private void InitializePlayerBaseInformation()
-        {
-            var playerData = DataManager.LoadPlayerDataFromJson().BaseData;
-
-            PlayerObject.name = playerData.Name;
-            PlayerObject.Class = (CombatClass) playerData.CombatClassID;
+            Player.name = data.Name;
+            Player.Class = (CombatClass) data.CombatClassID;
+            Player.portraitSprite = PortraitSprites.Icons[data.PortraitID];
+            Player.Level.Value = data.Level;
         }
 
         public void InitializePlayerSpells()
         {
             var playerData = DataManager.LoadPlayerDataFromJson();
 
-            PlayerObject.ListOfSpells[0].spell = ListOfSpellsObject.FindPotionByID(DataManager.LoadPlayerDataFromJson().SpellData[0].SpellID);
-
-            // Start at index #1 cause index 0 is reserved for Potions.
-            for (var i = 1; i < PlayerObject.ListOfSpells.Count; i++)
-            {
-                PlayerObject.ListOfSpells[i].spell = ListOfSpellsObject.FindSpellByID(playerData.SpellData[i].SpellID, PlayerObject.Class);
-            }
+            for (var i = 0; i < Player.SpellsListObject.SpellsList.Count; i++)
+                Player.SpellsListObject.SpellsList[i].spell = ListOfSpells.FindSpellByID(playerData.SpellData[i].SpellID, Player.Class);
 
             OnLoadPlayerSpellsFromJsonEvent.Raise();
         }

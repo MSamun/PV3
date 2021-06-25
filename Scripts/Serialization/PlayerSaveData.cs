@@ -14,9 +14,11 @@
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
 
+using System;
+
 namespace PV3.Serialization
 {
-    [System.Serializable]
+    [Serializable]
     public class PlayerSaveData
     {
         public BaseData BaseData;
@@ -27,11 +29,11 @@ namespace PV3.Serialization
         {
             BaseData = new BaseData();
             AttributeData = new AttributeData();
-            SpellData = new SpellData[6];
+            SpellData = new SpellData[7];
         }
     }
 
-    [System.Serializable]
+    [Serializable]
     public class BaseData
     {
         public string Name;
@@ -52,7 +54,7 @@ namespace PV3.Serialization
         }
     }
 
-    [System.Serializable]
+    [Serializable]
     public class AttributeData
     {
         public int Strength;
@@ -61,7 +63,7 @@ namespace PV3.Serialization
         public int Intelligence;
         public int Armor;
 
-        public AttributeData(int strength = 5, int dexterity = 5, int constitution = 5, int intelligence = 5, int armor = 5)
+        public AttributeData(int strength = 10, int dexterity = 10, int constitution = 10, int intelligence = 10, int armor = 10)
         {
             Strength = strength;
             Dexterity = dexterity;
@@ -71,7 +73,7 @@ namespace PV3.Serialization
         }
     }
 
-    [System.Serializable]
+    [Serializable]
     public class SpellData
     {
         public int SpellID;

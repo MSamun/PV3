@@ -14,21 +14,25 @@
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
 
+using System.Collections;
 using PV3.Miscellaneous;
+using PV3.ScriptableObjects.Character;
 using PV3.ScriptableObjects.Game;
-using PV3.ScriptableObjects.GameEvents;
+using PV3.ScriptableObjects.Spells;
 using PV3.ScriptableObjects.UI;
 using UnityEngine;
 
 namespace PV3.Character.StatusEffects
 {
-    public class ApplyCharacterUniqueEffects : MonobehaviourReference
+    public abstract class ApplyCharacterUniqueEffects : MonobehaviourReference
     {
         [SerializeField] protected CharacterObject Character;
         [SerializeField] private FloatingTextObject FloatingTextObject;
+        [SerializeField] private TurnNotificationObject TurnNotifObject;
 
         [Header("Game Events")]
-        [SerializeField] private GameEventObject OnCharacterSpellDoneEvent;
+        [SerializeField] private GameEventObject OnCharacterEndTurnEvent;
+
         [SerializeField] private GameEventObject OnCharacterNotStunnedEvent;
         [SerializeField] private GameEventObject OnCharacterDisplayFloatingTextEvent;
 
@@ -37,17 +41,13 @@ namespace PV3.Character.StatusEffects
             for (var i = 0; i < Character.StatusEffectObject.CurrentStatusEffects.Count; i++)
             {
                 if (!Character.StatusEffectObject.CurrentStatusEffects[i].inUse) continue;
-
-                if (Character.StatusEffectObject.CurrentStatusEffects[i].type == type)
-                {
-                    return i;
-                }
+                if (Character.StatusEffectObject.CurrentStatusEffects[i].type == type) return i;
             }
 
             return -1;
         }
 
-        // The Regenerate Effect gets applied at the beginning of a Character's Turn, while the Linger Effect gets applied at the end of a Character's Turn, hence the two methods.
+        // The Regenerate Effect gets applied at the beginning of a Character's Turn.
         public void ApplyRegenerateEffect()
         {
             if (Character.CurrentHealth.Value <= 0) return;
@@ -55,32 +55,31 @@ namespace PV3.Character.StatusEffects
             var index = FindStatusEffectOfType(StatusType.Regenerate);
             if (index == -1) return;
 
-            CalculateUniqueStatusEffectValue(index, false);
+            CalculateUniqueStatusEffectValue(index, true);
         }
 
+        // The Linger Effect gets applied at the end of a Character's Turn.
         public void ApplyLingerEffect()
         {
             var index = FindStatusEffectOfType(StatusType.Linger);
             if (index == -1) return;
 
-            CalculateUniqueStatusEffectValue(index, true);
+            print(Character.StatusEffectObject.CurrentStatusEffects[index].bonusAmount.ToString());
+            CalculateUniqueStatusEffectValue(index, false);
         }
 
-        private void CalculateUniqueStatusEffectValue(int index, bool isDeduct)
+        private void CalculateUniqueStatusEffectValue(int index, bool isRegen)
         {
-            var amount = Character.StatusEffectObject.CurrentStatusEffects[index].isPercentage ? Mathf.RoundToInt(Character.MaxHealth.Value * (Character.StatusEffectObject.CurrentStatusEffects[index].bonusAmount / 100f)) : Character.StatusEffectObject.CurrentStatusEffects[index].bonusAmount;
+            // Either deal [# - #] damage or deal damage equal to [# - #]% of Maximum Health.
+            var value = Character.StatusEffectObject.CurrentStatusEffects[index].isPercentage ? Mathf.RoundToInt(Character.MaxHealth.Value * (Character.StatusEffectObject.CurrentStatusEffects[index].bonusAmount / 100f)) : Character.StatusEffectObject.CurrentStatusEffects[index].bonusAmount;
 
-            FloatingTextObject.CreateNewFloatingText(isDeduct ? FloatingTextObject.DamageColor : FloatingTextObject.HealColor, amount.ToString());
+            FloatingTextObject.SetFloatingTextColorAndValue(isRegen ? FloatingTextObject.HealColor : FloatingTextObject.DamageColor, value.ToString());
             OnCharacterDisplayFloatingTextEvent.Raise();
 
-            if (isDeduct)
-            {
-                Character.DeductHealth(amount);
-            }
+            if (isRegen)
+                Character.AddHealth(value);
             else
-            {
-                Character.AddHealth(amount);
-            }
+                Character.DeductHealth(value);
 
             Character.StatusEffectObject.DecrementStatusEffectDuration(index);
         }
@@ -88,25 +87,19 @@ namespace PV3.Character.StatusEffects
         public void CheckIfStunned()
         {
             var index = FindStatusEffectOfType(StatusType.Stun);
-
             if (index == -1)
-            {
                 OnCharacterNotStunnedEvent.Raise();
-            }
             else
-            {
                 StartCoroutine(ApplyStunEffect(index));
-            }
         }
 
-        private System.Collections.IEnumerator ApplyStunEffect(int index)
+        private IEnumerator ApplyStunEffect(int index)
         {
-            print("Stun started!");
-            yield return new WaitForSeconds(2f);
+            TurnNotifObject.UpdateDescriptionToStunned(Character);
+            yield return new WaitForSeconds(1.5f);
 
-            OnCharacterSpellDoneEvent.Raise();
+            OnCharacterEndTurnEvent.Raise();
             Character.StatusEffectObject.DecrementStatusEffectDuration(index);
-            print("Stun done!");
         }
     }
 }

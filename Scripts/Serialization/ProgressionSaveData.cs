@@ -1,6 +1,8 @@
+using System;
+
 namespace PV3.Serialization
 {
-    [System.Serializable]
+    [Serializable]
     public class ProgressionSaveData
     {
         public StageData StageData;
@@ -11,7 +13,7 @@ namespace PV3.Serialization
         }
     }
 
-    [System.Serializable]
+    [Serializable]
     public class StageData
     {
         public int ChosenStage;

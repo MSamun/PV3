@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
 
+using DG.Tweening;
 using PV3.Miscellaneous;
 using UnityEngine;
 
@@ -21,17 +22,21 @@ namespace PV3.UI.FloatingText
 {
     public class HideFloatingText : MonobehaviourReference
     {
-        private const float DELAY_TIME = 0.75f;
+        private const float DELAY_TIME = 1.5f;
+        [SerializeField] private CanvasGroup canvasGroup;
 
         private void OnEnable()
         {
-            transform.localPosition += new Vector3(Random.Range(-20f, 20f), Random.Range(-20f, 20f), 0);
-            StartCoroutine(HideObject());
+            if (canvasGroup.alpha <= 0) canvasGroup.alpha = 1;
+
+            var localPosition = Vector3.zero;
+            localPosition += new Vector3(Random.Range(-25f, 25f), Random.Range(-30f, 30f), 0);
+            transform.localPosition = localPosition;
+            canvasGroup.DOFade(0f, DELAY_TIME).OnComplete(DisableGameObject);
         }
 
-        private System.Collections.IEnumerator HideObject()
+        private void DisableGameObject()
         {
-            yield return new WaitForSeconds(DELAY_TIME);
             gameObject.SetActive(false);
         }
     }

@@ -14,8 +14,6 @@
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
 
-using UnityEngine;
-
 namespace PV3.Audio
 {
     public enum BackgroundMusicType
@@ -30,8 +28,8 @@ namespace PV3.Audio
     public class BackgroundMusic
     {
         public BackgroundMusicType type;
-        public AudioClip mainClip;
-        public AudioClip introClip;
+        public UnityEngine.AudioClip mainClip;
+        public UnityEngine.AudioClip introClip;
         public bool playedIntroClip;
     }
 }

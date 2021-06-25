@@ -22,6 +22,6 @@ namespace PV3.Audio
     {
         public static float BackgroundVolume { get; set; }
         public static float SoundEffectVolume { get; set; }
-        public static AudioClip SpellSFX { get; set; }
+        public static AudioClip SpellSfx { get; set; }
     }
 }

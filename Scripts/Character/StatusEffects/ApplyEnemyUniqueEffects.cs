@@ -14,22 +14,16 @@
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
 
+using PV3.Game;
+using UnityEngine;
+
 namespace PV3.Character.StatusEffects
 {
-    [UnityEngine.RequireComponent(typeof(DetermineCurrentEnemyInStage))]
     public class ApplyEnemyUniqueEffects : ApplyCharacterUniqueEffects
     {
-        private DetermineCurrentEnemyInStage currentEnemyReference;
-
-        private void Start()
+        public void SetCurrentEnemy()
         {
-            currentEnemyReference = GetComponent<DetermineCurrentEnemyInStage>();
-            DetermineCurrentEnemy();
-        }
-
-        private void DetermineCurrentEnemy()
-        {
-            Character = currentEnemyReference.FindCurrentEnemy();
+            Character = GameStateManager.CurrentEnemy;
         }
     }
 }

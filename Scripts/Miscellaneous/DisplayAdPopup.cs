@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
 
+using System.Collections;
 using UnityEngine;
 
 namespace PV3.Miscellaneous
@@ -28,7 +29,7 @@ namespace PV3.Miscellaneous
             StartCoroutine(PopupTimer());
         }
 
-        private System.Collections.IEnumerator PopupTimer()
+        private IEnumerator PopupTimer()
         {
             while (true)
             {

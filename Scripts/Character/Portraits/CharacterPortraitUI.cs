@@ -15,7 +15,7 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 
 using PV3.Miscellaneous;
-using PV3.ScriptableObjects.GameEvents;
+using PV3.ScriptableObjects.Character;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -28,43 +28,34 @@ namespace PV3.Character.Portraits
 
         [Header("UI Components")]
         [SerializeField] protected Image Icon;
+
         [SerializeField] protected TextMeshProUGUI LevelText;
         [SerializeField] protected TextMeshProUGUI NameText;
 
-        [Header("Game Events")]
-        [SerializeField] protected GameEventObject OnAttributesCalculatedEvent;
-
-        protected virtual void Start()
+        public void InitializePortrait()
         {
             PopulateUIComponents();
-            PopulatePlayerAttributesObjectFromJson();
             InitializeCharacterValues();
         }
 
-        public virtual void PopulateUIComponents() { }
-        protected virtual void PopulatePlayerAttributesObjectFromJson() { }
-
-        protected void InitializeCharacterValues()
+        public virtual void PopulateUIComponents()
         {
-            ResetSpellCooldowns();
-
-            Character.StatusEffectObject.ResetStatusEffectList();
-            Character.StatusEffectObject.BonusObject.ResetBonus();
-
-            Character.InitializeHealthValues();
-            Character.InitializeSubAttributes();
-
-            // Health Bar gets initialized after Attributes of Character gets set.
-            OnAttributesCalculatedEvent.Raise();
+            Icon.sprite = Character.portraitSprite;
+            NameText.text = Character.name;
+            LevelText.text = Character.Level.Value.ToString();
         }
 
-        private void ResetSpellCooldowns()
+        private void InitializeCharacterValues()
         {
-            for (var i = 0; i < Character.ListOfSpells.Count; i++)
-            {
-                Character.ListOfSpells[i].isOnCooldown = false;
-                Character.ListOfSpells[i].cooldownTimer = 0;
-            }
+            Character.SpellsListObject.ResetSpellCooldowns();
+            Character.StatusEffectObject.ResetStatusEffectList();
+            Character.StatusEffectObject.BonusObject.ResetAllBonusesToZero();
+            Character.InitializeStats();
+        }
+
+        public void RecoverStamina()
+        {
+            Character.AddStamina(50);
         }
     }
 }

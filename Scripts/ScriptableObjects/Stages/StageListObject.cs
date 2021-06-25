@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -24,14 +25,14 @@ namespace PV3.ScriptableObjects.Stages
     [CreateAssetMenu(fileName = "New Stage List", menuName = "Stage Select/Stage List*")]
     public class StageListObject : ScriptableObject
     {
-        [System.Serializable]
+        [Header("Stage List")]
+        public List<StageInformation> listOfStages = new List<StageInformation>();
+
+        [Serializable]
         public struct StageInformation
         {
             public StageInfoObject Stage;
             // [INSERT MISSION OBJECTS HERE]
         }
-
-        [Header("Stage List")]
-        public List<StageInformation> listOfStages = new List<StageInformation>();
     }
 }

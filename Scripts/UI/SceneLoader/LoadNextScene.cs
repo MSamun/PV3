@@ -16,7 +16,7 @@
 
 using System.Collections;
 using PV3.Miscellaneous;
-using PV3.ScriptableObjects.Variables;
+using PV3.ScriptableObjects.Game;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -33,6 +33,7 @@ namespace PV3.UI.SceneLoader
 
         [Header("---------- UI COMPONENTS ----------")]
         [SerializeField] private Slider progressBar;
+
         [SerializeField] private TextMeshProUGUI progressText;
         [SerializeField] private TextMeshProUGUI tipText;
         public string[] tipArray = new string[5];

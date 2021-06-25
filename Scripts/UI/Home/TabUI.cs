@@ -14,12 +14,13 @@
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
 
+using System;
 using PV3.Miscellaneous;
 using UnityEngine;
 
 namespace PV3.UI.Home
 {
-    [System.Serializable]
+    [Serializable]
     public class TabInformation
     {
         public GameObject TabUnfocus;
@@ -29,8 +30,14 @@ namespace PV3.UI.Home
 
     public class TabUI : MonobehaviourReference
     {
-        private int index;
         [SerializeField] private TabInformation[] TotalTabs;
+        private int index;
+
+        private void OnEnable()
+        {
+            index = 0;
+            DisplayAppropriatePanel();
+        }
 
         public void MoveToTab(int tabIndex = 0)
         {
@@ -46,12 +53,6 @@ namespace PV3.UI.Home
                 if (TotalTabs[i].TabFocus) TotalTabs[i].TabFocus.gameObject.SetActive(index == i);
                 if (TotalTabs[i].TabPanel) TotalTabs[i].TabPanel.gameObject.SetActive(index == i);
             }
-        }
-
-        private void OnEnable()
-        {
-            index = 0;
-            DisplayAppropriatePanel();
         }
     }
 }

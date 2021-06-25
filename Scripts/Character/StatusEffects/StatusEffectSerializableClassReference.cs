@@ -14,11 +14,12 @@
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
 
-using PV3.ScriptableObjects.Game;
+using System;
+using PV3.ScriptableObjects.Spells;
 
 namespace PV3.Character.StatusEffects
 {
-    [System.Serializable]
+    [Serializable]
     public class StatusEffect
     {
         public StatusType type;
@@ -29,7 +30,16 @@ namespace PV3.Character.StatusEffects
         public bool inUse;
         public bool isUnique;
 
-        public StatusEffect(StatusType type = StatusType.Damage, int bonusAmount = 0, int duration = 0, bool isDebuff = false, bool isPercentage = false, bool isUnique = false, bool inUse = false)
+        public StatusEffect
+        (
+            StatusType type = StatusType.Damage,
+            int bonusAmount = 0,
+            int duration = 0,
+            bool isDebuff = false,
+            bool isPercentage = false,
+            bool isUnique = false,
+            bool inUse = false
+        )
         {
             this.type = type;
             this.bonusAmount = bonusAmount;

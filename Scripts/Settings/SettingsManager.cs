@@ -14,10 +14,10 @@
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
 
-using TMPro;
 using PV3.Audio;
 using PV3.Miscellaneous;
 using PV3.Serialization;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,20 +25,29 @@ namespace PV3.Settings
 {
     public class SettingsManager : MonobehaviourReference
     {
-        private TextMeshProUGUI backgroundMusicSliderText;
-        private TextMeshProUGUI buttonSfxSliderText;
-
         [Header("Sliders")]
         [SerializeField] private Slider backgroundMusicSlider;
+
         [SerializeField] private Slider buttonSfxSlider;
+        private TextMeshProUGUI backgroundMusicSliderText;
+        private TextMeshProUGUI buttonSfxSliderText;
 
         private void Awake()
         {
             InitializeSliders();
-
             var audioData = DataManager.LoadSettingsDataFromJson().AudioData;
+
             backgroundMusicSlider.value = audioData.BackgroundMusicVolume;
             buttonSfxSlider.value = audioData.ButtonSfxVolume;
+
+            UpdateBackgroundMusicSliderText();
+            UpdateButtonSfxSliderText();
+        }
+
+        private void OnDestroy()
+        {
+            var data = new AudioData(backgroundMusicSlider.value, buttonSfxSlider.value);
+            DataManager.UpdateSettingsAudioData(data);
         }
 
         private void InitializeSliders()
@@ -50,21 +59,25 @@ namespace PV3.Settings
         // Referenced by the BGM Slider in the Settings Scene. Gets executed whenever the user changes the value of the BGM Slider.
         public void AdjustBackgroundMusicVolume()
         {
-            backgroundMusicSliderText.text = $"{Mathf.RoundToInt(backgroundMusicSlider.value * 100f).ToString()}%";
+            UpdateBackgroundMusicSliderText();
             AudioManager.BackgroundVolume = backgroundMusicSlider.value;
         }
 
         // Referenced by the SFX Slider in the Settings Scene. Gets executed whenever the user changes the value of the SFX Slider.
         public void AdjustButtonSfxVolume()
         {
-            buttonSfxSliderText.text = $"{Mathf.RoundToInt(buttonSfxSlider.value * 100f).ToString()}%";
+            UpdateButtonSfxSliderText();
             AudioManager.SoundEffectVolume = buttonSfxSlider.value;
         }
 
-        private void OnDestroy()
+        private void UpdateBackgroundMusicSliderText()
         {
-            var data = new AudioData(backgroundMusicSlider.value, buttonSfxSlider.value);
-            DataManager.UpdateSettingsAudioData(data);
+            backgroundMusicSliderText.text = $"{Mathf.RoundToInt(backgroundMusicSlider.value * 100f).ToString()}%";
+        }
+
+        private void UpdateButtonSfxSliderText()
+        {
+            buttonSfxSliderText.text = $"{Mathf.RoundToInt(buttonSfxSlider.value * 100f).ToString()}%";
         }
     }
 }

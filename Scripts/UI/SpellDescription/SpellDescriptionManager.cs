@@ -14,38 +14,42 @@
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
 
-using PV3.Character;
-using PV3.ScriptableObjects.Game;
+using PV3.ScriptableObjects.Character;
+using PV3.ScriptableObjects.Spells;
 using UnityEngine;
 
 namespace PV3.UI.SpellDescription
 {
     public static class SpellDescriptionManager
     {
-        private static AttributesObject Attributes;
+        private static AttributesObject attributes;
 
         // When displaying Spell and Status Effect Tooltips, damage calculations are made and shown in the description.
         // We need a reference of the Character's Attribute information.
         // Originally, the Spell Tooltip would have showed this: [4 - 6](+50% Strength). Assuming that the Character's Strength is equal to 7, it now shows this:
         // [4 - 6](+3). It always rounds down.
 
-        public static string SetDescription(SpellObject spell, AttributesObject attributes)
+        public static string SetDescription(SpellObject spell, AttributesObject attribute)
         {
-            if (!spell || !attributes)
+            if (!spell || !attribute)
             {
-                Debug.LogError($"Error! SpellObject or AttributesObject is NULL. SPELL: {spell}, ATTRIBUTES: {attributes}");
+                Debug.LogError($"Error! SpellObject or AttributesObject is NULL. SPELL: {spell}, ATTRIBUTES: {attribute}");
                 return string.Empty;
             }
 
-            Attributes = attributes;
+            SpellDescriptionManager.attributes = attribute;
             var localDesc = string.Empty;
 
             for (var i = 0; i < spell.components.Count; i++)
             {
                 if (!spell.components[i]) continue;
 
-                var attributeBonusDesc = CalculateAndDisplayAttributeBonus(spell.components[i].attributeType, spell.components[i].attributePercentage,
-                    spell.components[i].usePercentage);
+                var attributeBonusDesc = CalculateAndDisplayAttributeBonus
+                (
+                    spell.components[i].attributeType,
+                    spell.components[i].attributePercentage,
+                    spell.components[i].usePercentage
+                );
                 var minimumValueDesc = spell.components[i].minimumValue.ToString();
                 var maximumValueDesc = spell.components[i].maximumValue.ToString();
                 var valueDisplayModifierDesc = spell.components[i].usePercentage ? $"{maximumValueDesc}%" : $"[{minimumValueDesc} - {maximumValueDesc}]";
@@ -76,9 +80,7 @@ namespace PV3.UI.SpellDescription
                     // Damage, Block, Dodge, DamageReduction, and Critical StatusTypes.
                     if (!comp.isUnique)
                     {
-                        string typeDesc;
-                        typeDesc = comp.StatusType == StatusType.DamageReduction ? "Damage Reduction" :
-                            $"{comp.StatusType.ToString()}{(comp.StatusType != StatusType.Damage ? " Chance" : string.Empty)}";
+                        var typeDesc = comp.StatusType == StatusType.DamageReduction ? "Damage Reduction" : $"{comp.StatusType.ToString()}{(comp.StatusType != StatusType.Damage ? " Chance" : string.Empty)}";
 
                         // FORMAT: [Increases your/Decreases the target's] [StatusType] by [##%](+AttributeType) for [#] turn[s].
                         localDesc += $"{nonUniqueStatusEffectDesc} {typeDesc} by {valueDisplayModifierDesc}{attributeBonusDesc} for {turnDesc}. ";
@@ -119,27 +121,27 @@ namespace PV3.UI.SpellDescription
             if (type == AttributeType.Strength)
             {
                 colorText = "#E17D00";
-                baseAttributeValue = Attributes.Strength;
+                baseAttributeValue = attributes.Strength;
             }
             else if (type == AttributeType.Dexterity)
             {
                 colorText = "#00C800";
-                baseAttributeValue = Attributes.Dexterity;
+                baseAttributeValue = attributes.Dexterity;
             }
             else if (type == AttributeType.Constitution)
             {
                 colorText = "#E10000";
-                baseAttributeValue = Attributes.Constitution;
+                baseAttributeValue = attributes.Constitution;
             }
             else if (type == AttributeType.Intelligence)
             {
                 colorText = "#00A0FF";
-                baseAttributeValue = Attributes.Intelligence;
+                baseAttributeValue = attributes.Intelligence;
             }
             else if (type == AttributeType.Armor)
             {
                 colorText = "#969696";
-                baseAttributeValue = Attributes.Armor;
+                baseAttributeValue = attributes.Armor;
             }
 
             var finalAttributeValue = Mathf.FloorToInt(baseAttributeValue * percent);

@@ -14,10 +14,11 @@
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
 
+using PV3.Game;
 using PV3.Miscellaneous;
-using PV3.ScriptableObjects.GameEvents;
-using PV3.ScriptableObjects.Variables;
-using PV3.UI.Tooltip.Spell;
+using PV3.ScriptableObjects.Character;
+using PV3.ScriptableObjects.Game;
+using PV3.UI.Tooltip;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -33,35 +34,41 @@ namespace PV3.Character.Spells
 
         [Header("UI Components")]
         [SerializeField] private Button spellButton;
+
         [SerializeField] private Image cooldownPanel;
         [SerializeField] private TextMeshProUGUI cooldownPanelText;
+        [SerializeField] private TextMeshProUGUI spellNameText;
+        [SerializeField] private TextMeshProUGUI spellCostText;
 
         [Header("Game Events")]
         [SerializeField] private GameEventObject OnSpellUseEvent;
 
         public void InitializeSpellButton()
         {
-            if (!Player.ListOfSpells[assignedSpellIndex].spell) return;
+            if (!Player.SpellsListObject.SpellsList[assignedSpellIndex].spell) return;
 
             spellButton.onClick.RemoveAllListeners();
             spellButton.onClick.AddListener(UseSpell);
-            spellButton.GetComponent<Image>().sprite = Player.ListOfSpells[assignedSpellIndex].spell.sprite;
+            spellButton.GetComponent<Image>().sprite = Player.SpellsListObject.SpellsList[assignedSpellIndex].spell.sprite;
 
-            GetComponent<SpellTooltipTrigger>().Spell = Player.ListOfSpells[assignedSpellIndex].spell;
+            GetComponent<SpellTooltipTrigger>().Spell = Player.SpellsListObject.SpellsList[assignedSpellIndex].spell;
+
+            spellNameText.text = Player.SpellsListObject.SpellsList[assignedSpellIndex].spell.name;
+            spellCostText.text = Player.SpellsListObject.SpellsList[assignedSpellIndex].spell.staminaCost.ToString();
         }
 
-        public void UseSpell()
+        private void UseSpell()
         {
             SpellUsedIndex.Value = assignedSpellIndex;
-            InitializeCooldown();
+
+            Player.SpellsListObject.SetSpellOnCooldown(assignedSpellIndex);
+            DisplayCooldownPanel();
+
             OnSpellUseEvent.Raise();
         }
 
-        private void InitializeCooldown()
+        private void DisplayCooldownPanel()
         {
-            Player.ListOfSpells[assignedSpellIndex].isOnCooldown = true;
-            Player.ListOfSpells[assignedSpellIndex].cooldownTimer = Player.ListOfSpells[assignedSpellIndex].spell.totalCooldown;
-
             spellButton.interactable = false;
             cooldownPanel.gameObject.SetActive(true);
             UpdateCooldownPanelDisplay();
@@ -69,27 +76,32 @@ namespace PV3.Character.Spells
 
         private void UpdateCooldownPanelDisplay()
         {
-            cooldownPanel.fillAmount = Mathf.Abs(Player.ListOfSpells[assignedSpellIndex].cooldownTimer / (float)Player.ListOfSpells[assignedSpellIndex].spell.totalCooldown);
-            cooldownPanelText.text = $"{Player.ListOfSpells[assignedSpellIndex].cooldownTimer.ToString()}";
+            cooldownPanel.fillAmount = Mathf.Abs(Player.SpellsListObject.SpellsList[assignedSpellIndex].cooldownTimer / (float) Player.SpellsListObject.SpellsList[assignedSpellIndex].spell.totalCooldown);
+            cooldownPanelText.text = $"{Player.SpellsListObject.SpellsList[assignedSpellIndex].cooldownTimer.ToString()}";
         }
 
         public void DecrementCooldownTimer()
         {
-            if (!Player.ListOfSpells[assignedSpellIndex].isOnCooldown) return;
+            if (!Player.SpellsListObject.IsSpellOnCooldown(assignedSpellIndex) && GameStateManager.CurrentGameState != GameStateManager.GameState.PlayerTurn) return;
 
-            Player.ListOfSpells[assignedSpellIndex].cooldownTimer--;
+            Player.SpellsListObject.DecrementSpellCooldownTimer(assignedSpellIndex);
             UpdateCooldownPanelDisplay();
 
-            if (Player.ListOfSpells[assignedSpellIndex].cooldownTimer != 0) return;
-
-            Player.ListOfSpells[assignedSpellIndex].isOnCooldown = false;
+            if (Player.SpellsListObject.IsSpellOnCooldown(assignedSpellIndex)) return;
             cooldownPanel.gameObject.SetActive(false);
         }
 
         public void EnableSpell()
         {
-            if (!Player.ListOfSpells[assignedSpellIndex].isOnCooldown && !spellButton.interactable)
+            if (!Player.SpellsListObject.IsSpellOnCooldown(assignedSpellIndex) &&
+                !spellButton.interactable && Player.CurrentStamina.Value >= Player.SpellsListObject.SpellsList[assignedSpellIndex].spell.staminaCost)
                 spellButton.interactable = true;
+        }
+
+        public void DisableSpell()
+        {
+            if (spellButton.interactable)
+                spellButton.interactable = false;
         }
     }
 }

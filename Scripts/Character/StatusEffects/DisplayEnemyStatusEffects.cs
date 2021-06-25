@@ -14,21 +14,15 @@
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
 
+using PV3.Game;
+
 namespace PV3.Character.StatusEffects
 {
     public class DisplayEnemyStatusEffects : DisplayStatusEffects
     {
-        private DetermineCurrentEnemyInStage currentEnemyReference;
-
-        private void Start()
+        public void SetCurrentEnemy()
         {
-            currentEnemyReference = GetComponentInParent<DetermineCurrentEnemyInStage>();
-            DetermineCurrentEnemy();
-        }
-
-        public void DetermineCurrentEnemy()
-        {
-            CharacterObject = currentEnemyReference.FindCurrentEnemy();
+            Character = GameStateManager.CurrentEnemy;
         }
     }
 }

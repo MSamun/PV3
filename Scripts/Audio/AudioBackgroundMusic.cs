@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
 
+using System.Collections;
 using PV3.Miscellaneous;
 using PV3.Serialization;
 using UnityEngine;
@@ -23,12 +24,8 @@ namespace PV3.Audio
     [RequireComponent(typeof(AudioSource))]
     public class AudioBackgroundMusic : MonobehaviourReference
     {
-        private AudioSource backgroundMusicSource;
-        private AudioClip backgroundMusicClip;
-        private AudioClip victoryCueClip;
-        private AudioClip defeatCueClip;
-
         [SerializeField] private BackgroundMusic[] BackgroundMusicClips = new BackgroundMusic[0];
+        private AudioSource backgroundMusicSource;
 
         private void Awake()
         {
@@ -40,7 +37,7 @@ namespace PV3.Audio
             StartCoroutine(LoopThroughMainBackgroundMusic());
         }
 
-        private System.Collections.IEnumerator LoopThroughMainBackgroundMusic()
+        private IEnumerator LoopThroughMainBackgroundMusic()
         {
             var backgroundMusic = FindClip(BackgroundMusicType.Main);
 
@@ -53,9 +50,13 @@ namespace PV3.Audio
                     backgroundMusic.playedIntroClip = true;
                 }
 
+                if (!backgroundMusic.mainClip) break;
+
                 PlayClip(backgroundMusic.mainClip);
                 yield return new WaitForSeconds(backgroundMusic.mainClip.length);
             }
+
+            yield return null;
         }
 
         private BackgroundMusic FindClip(BackgroundMusicType type)
@@ -81,14 +82,18 @@ namespace PV3.Audio
         {
             StopMainBackgroundMusic();
             var clip = FindClip(BackgroundMusicType.Defeat);
-            PlayClip(clip.mainClip);
+
+            if (clip.mainClip)
+                PlayClip(clip.mainClip);
         }
 
         public void PlayVictoryClip()
         {
             StopMainBackgroundMusic();
             var clip = FindClip(BackgroundMusicType.Victory);
-            PlayClip(clip.mainClip);
+
+            if (clip.mainClip)
+                PlayClip(clip.mainClip);
         }
 
         private void StopMainBackgroundMusic()

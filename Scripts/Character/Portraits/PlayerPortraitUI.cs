@@ -14,26 +14,20 @@
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
 
-using PV3.ScriptableObjects.UI;
+using PV3.ScriptableObjects.Character;
 using PV3.Serialization;
-using UnityEngine;
 
 namespace PV3.Character.Portraits
 {
     public class PlayerPortraitUI : CharacterPortraitUI
     {
-        [SerializeField] private PortraitIconSpritesObject PortraitSprites;
-
         public override void PopulateUIComponents()
         {
-            var data = DataManager.LoadPlayerDataFromJson().BaseData;
-
-            Icon.sprite = PortraitSprites.Icons[data.PortraitID];
-            NameText.text = data.Name;
-            LevelText.text = data.Level.ToString();
+            base.PopulateUIComponents();
+            PopulatePlayerAttributesObjectFromJson();
         }
 
-        protected override void PopulatePlayerAttributesObjectFromJson()
+        private void PopulatePlayerAttributesObjectFromJson()
         {
             var data = DataManager.LoadPlayerDataFromJson().AttributeData;
 

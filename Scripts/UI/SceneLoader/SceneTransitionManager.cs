@@ -16,8 +16,7 @@
 
 using System.Collections;
 using PV3.Miscellaneous;
-using PV3.ScriptableObjects.GameEvents;
-using PV3.ScriptableObjects.Variables;
+using PV3.ScriptableObjects.Game;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -25,7 +24,13 @@ namespace PV3.UI.SceneLoader
 {
     // If more Scenes are created and need a transition animation between them, then add it to this Enum list.
     // Make sure the Enum order is the same as the Build order in Unity Build Settings.
-    public enum SceneIndexes { Title, Loading, Home, Game };
+    public enum SceneIndexes
+    {
+        Title,
+        Loading,
+        Home,
+        Game
+    }
 
     public class SceneTransitionManager : MonobehaviourReference
     {
@@ -35,6 +40,7 @@ namespace PV3.UI.SceneLoader
 
         [Header("Transition Components")]
         [SerializeField] private GameObject SceneTransition;
+
         [SerializeField] private IntValue SceneIndex;
         [SerializeField] private GameEventObject OnLoadNextSceneEvent;
 
@@ -49,19 +55,19 @@ namespace PV3.UI.SceneLoader
 
         public void LoadHomeScene()
         {
-            SceneIndex.Value = (int)SceneIndexes.Home;
+            SceneIndex.Value = (int) SceneIndexes.Home;
             OnLoadNextSceneEvent.Raise();
         }
 
         public void LoadGameScene()
         {
-            SceneIndex.Value = (int)SceneIndexes.Game;
+            SceneIndex.Value = (int) SceneIndexes.Game;
             OnLoadNextSceneEvent.Raise();
         }
 
         public void LoadTitleScene()
         {
-            SceneIndex.Value = (int)SceneIndexes.Title;
+            SceneIndex.Value = (int) SceneIndexes.Title;
             OnLoadNextSceneEvent.Raise();
         }
 

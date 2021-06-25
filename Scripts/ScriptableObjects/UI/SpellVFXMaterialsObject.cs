@@ -18,11 +18,12 @@ using UnityEngine;
 
 namespace PV3.ScriptableObjects.UI
 {
-    // The asterik (*) implies that only one copy of this object is needed. A singleton might be good in this situation, but since I'm the only one working on this game
+    // The asterisk (*) implies that only one copy of this object is needed. A singleton might be good in this situation, but since I'm the only one working on this game
     // it's more of a visual reminder for me.
     [CreateAssetMenu(fileName = "New Spell VFX Object", menuName = "Game/UI/Spell VFX Materials*")]
     public class SpellVFXMaterialsObject : ScriptableObject
     {
+        // As of now, this is enough functionality for what I want to accomplish. If need be, a List of Materials will be created and I can just choose which Material to display.
         public Material CurrentlyChosenMaterial { get; private set; }
 
         public void SetParticleEffect(Material material)
