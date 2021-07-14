@@ -26,7 +26,6 @@ namespace PV3.Game
             PlayerTurn,
             EnemyTurn,
             NextEnemy,
-            BossEncounter,
             Victory,
             Defeat
         }
@@ -63,11 +62,6 @@ namespace PV3.Game
         public static void SwitchToNextEnemy()
         {
             CurrentGameState = GameState.NextEnemy;
-        }
-
-        public static void SwitchToBossEncounter()
-        {
-            CurrentGameState = GameState.BossEncounter;
         }
 
         public static void SwitchToVictory()

@@ -32,22 +32,17 @@ namespace PV3.Game
 
         [Header("Game Events")]
         [SerializeField] private GameEventObject OnStartStageVictoryEvent;
-
         [SerializeField] private GameEventObject OnStartStageDefeatEvent;
-        [SerializeField] private GameEventObject OnStartStageInitializationEvent;
 
         [Header("Character Game Events")]
         [SerializeField] private GameEventObject OnPlayerStartTurnEvent;
-
         [SerializeField] private GameEventObject OnEnemyStartTurnEvent;
         [SerializeField] private GameEventObject OnMoveToNextEnemyEvent;
-        [SerializeField] private GameEventObject OnStartBossEncounterInitializationEvent;
 
         private void Start()
         {
             GameStateManager.StartMatch();
             StageListIndex.Value = DataManager.LoadProgressionDataFromJson().StageData.ChosenStage - 1;
-            OnStartStageInitializationEvent.Raise();
         }
 
         public void StartPlayerTurn()
@@ -66,11 +61,6 @@ namespace PV3.Game
         {
             GameStateManager.SwitchToNextEnemy();
             OnMoveToNextEnemyEvent.Raise();
-        }
-
-        public void StartBossEncounterInitialization()
-        {
-            GameStateManager.SwitchToBossEncounter();
         }
 
         public void StartVictoryState()

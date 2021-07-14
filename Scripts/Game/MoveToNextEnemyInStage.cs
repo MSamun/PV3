@@ -31,8 +31,8 @@ namespace PV3.Game
 
         [Header("Game Events")]
         [SerializeField] private GameEventObject OnNoMoreEnemiesEvent;
-
         [SerializeField] private GameEventObject OnInitializeNewEnemyEvent;
+        [SerializeField] private GameEventObject OnStartBossEncounterEvent;
 
         private int numberOfDeaths;
 
@@ -63,6 +63,14 @@ namespace PV3.Game
             else
             {
                 CurrentEnemyIndex.Value++;
+
+                if (ListOfStagesObject.listOfStages[StageListIndex.Value].Stage.hasBoss &&
+                    numberOfDeaths == ListOfStagesObject.listOfStages[StageListIndex.Value].Stage.listOfEnemies.Count - 1)
+                {
+                    OnStartBossEncounterEvent.Raise();
+                    return;
+                }
+
                 OnInitializeNewEnemyEvent.Raise();
             }
         }

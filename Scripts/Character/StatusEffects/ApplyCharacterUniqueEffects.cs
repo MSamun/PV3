@@ -64,7 +64,6 @@ namespace PV3.Character.StatusEffects
             var index = FindStatusEffectOfType(StatusType.Linger);
             if (index == -1) return;
 
-            print(Character.StatusEffectObject.CurrentStatusEffects[index].bonusAmount.ToString());
             CalculateUniqueStatusEffectValue(index, false);
         }
 

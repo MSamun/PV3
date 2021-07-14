@@ -25,14 +25,17 @@ using UnityEngine;
 
 namespace PV3.Character.Spells
 {
-    public class EnemyStanceLogic : MonobehaviourReference
+    public class EnemyLogic : MonobehaviourReference
     {
         [SerializeField] private IntValue SpellIndex;
         [SerializeField] private GameEventObject OnChosenSpellEvent;
+        [SerializeField] private GameEventObject OnEnemyEndTurnEvent;
 
         private EnemyObject _enemy;
         private const int NO_SPELL_AVAILABLE = -1;
         private int _localIndex;
+
+        [Header("")]
         [SerializeField] private List<int> _availableSpells = new List<int>();
 
         public void SetCurrentEnemy()
@@ -40,7 +43,7 @@ namespace PV3.Character.Spells
             _enemy = GameStateManager.CurrentEnemy;
         }
 
-        public void DetermineSpellBasedOffStance()
+        public void DetermineSpell()
         {
             if (GameStateManager.CurrentGameState != GameStateManager.GameState.EnemyTurn) return;
 
@@ -55,21 +58,6 @@ namespace PV3.Character.Spells
             }
 
             StartCoroutine(ExecuteEnemySpellLogic());
-            // switch (_enemy.Stance)
-            // {
-            //     case Stance.Aggressive:
-            //         StartCoroutine(ExecuteAggressiveStanceLogic());
-            //         break;
-            //     case Stance.Defensive:
-            //         StartCoroutine(ExecuteDefensiveStanceLogic());
-            //         break;
-            //     case Stance.Balanced:
-            //         StartCoroutine(ExecuteBalancedStanceLogic());
-            //         break;
-            //     default:
-            //         print("Default message in Enemy Stance!");
-            //         return;
-            // }
         }
 
         private IEnumerator ExecuteMandatoryHealSpell()
@@ -89,52 +77,13 @@ namespace PV3.Character.Spells
                 _localIndex = _availableSpells[Random.Range(0, _availableSpells.Count)];
                 SetChosenSpell();
             }
+            else
+            {
+                OnEnemyEndTurnEvent.Raise();
+            }
 
             yield return null;
         }
-
-        // private IEnumerator ExecuteAggressiveStanceLogic()
-        // {
-        //     yield return new WaitForSeconds(1.75f);
-        //     PopulateListOfAvailableSpells();
-        //
-        //     // Enemy will choose a random Spell in the List of available Spells.
-        //     if (_availableSpells.Count > 0)
-        //     {
-        //         _localIndex = _availableSpells[Random.Range(0, _availableSpells.Count)];
-        //         SetChosenSpell();
-        //     }
-        //
-        //     yield return null;
-        // }
-        //
-        // private IEnumerator ExecuteDefensiveStanceLogic()
-        // {
-        //     yield return new WaitForSeconds(1.75f);
-        //     PopulateListOfAvailableSpells();
-        //
-        //     // Enemy will choose a random Spell in the List of available Spells.
-        //     if (_availableSpells.Count > 0)
-        //     {
-        //         _localIndex = _availableSpells[Random.Range(0, _availableSpells.Count)];
-        //         SetChosenSpell();
-        //     }
-        //     yield return null;
-        // }
-        //
-        // private IEnumerator ExecuteBalancedStanceLogic()
-        // {
-        //     yield return new WaitForSeconds(1.75f);
-        //     PopulateListOfAvailableSpells();
-        //
-        //     // Enemy will choose a random Spell in the List of available Spells.
-        //     if (_availableSpells.Count > 0)
-        //     {
-        //         _localIndex = _availableSpells[Random.Range(0, _availableSpells.Count)];
-        //         SetChosenSpell();
-        //     }
-        //     yield return null;
-        // }
 
         private void PopulateListOfAvailableSpells()
         {
@@ -187,7 +136,7 @@ namespace PV3.Character.Spells
         private bool EnemyCanUseAStatusEffectSpell(int index)
         {
             // Enemy can only use a Status Effect Spell if:
-            //      - It applies a debuff to the Player.
+            //      - It applies a Debuff to the Player.
             //      - It applies a buff to itself while it currently does not have any buffs active.
             var hasBuffsActive = false;
             var doesSpellApplyBuff = false;
@@ -212,7 +161,6 @@ namespace PV3.Character.Spells
             // IF ENEMY HAS A BUFF AND DOES NOT TRY TO USE BUFF         -> TRUE
             // IF ENEMY DOES NOT HAVE BUFF AND TRIES TO USE BUFF        -> TRUE
             // IF ENEMY DOES NOT HAVE BUFF AND DOES NOT TRY TO USE BUFF -> TRUE
-            print((!hasBuffsActive || !doesSpellApplyBuff).ToString());
             return !hasBuffsActive || !doesSpellApplyBuff;
         }
     }

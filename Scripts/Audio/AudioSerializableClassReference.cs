@@ -19,7 +19,9 @@ namespace PV3.Audio
     public enum BackgroundMusicType
     {
         Main,
+        IncomingBoss,
         Boss,
+        Dungeon,
         Victory,
         Defeat
     }

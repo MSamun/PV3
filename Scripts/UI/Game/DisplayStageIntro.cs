@@ -22,6 +22,7 @@ using UnityEngine;
 
 namespace PV3.UI.Game
 {
+    [RequireComponent(typeof(CanvasGroup))]
     public class DisplayStageIntro : MonobehaviourReference
     {
         [SerializeField] private CanvasGroup canvasGroup;

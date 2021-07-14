@@ -32,7 +32,6 @@ namespace PV3.UI.Tooltip
 
         public void SetStatusEffect(StatusEffect effect)
         {
-            print(effect.type.ToString());
             statusEffect = effect;
         }
 

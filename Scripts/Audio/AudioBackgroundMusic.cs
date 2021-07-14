@@ -26,6 +26,7 @@ namespace PV3.Audio
     {
         [SerializeField] private BackgroundMusic[] BackgroundMusicClips = new BackgroundMusic[0];
         private AudioSource backgroundMusicSource;
+        private Coroutine co;
 
         private void Awake()
         {
@@ -34,12 +35,12 @@ namespace PV3.Audio
             if (!backgroundMusicSource) return;
             backgroundMusicSource.volume = DataManager.LoadSettingsDataFromJson().AudioData.BackgroundMusicVolume;
 
-            StartCoroutine(LoopThroughMainBackgroundMusic());
+            co = StartCoroutine(LoopThroughBackgroundMusic(BackgroundMusicType.Main));
         }
 
-        private IEnumerator LoopThroughMainBackgroundMusic()
+        private IEnumerator LoopThroughBackgroundMusic(BackgroundMusicType type)
         {
-            var backgroundMusic = FindClip(BackgroundMusicType.Main);
+            var backgroundMusic = FindClip(type);
 
             while (backgroundMusicSource)
             {
@@ -72,41 +73,56 @@ namespace PV3.Audio
 
         private void PlayClip(AudioClip clip)
         {
-            if (!clip) return;
+            if (!clip || !backgroundMusicSource) return;
 
             backgroundMusicSource.clip = clip;
             backgroundMusicSource.Play();
         }
 
-        public void PlayDefeatClip()
+        public void PlayDefeatAudio()
         {
-            StopMainBackgroundMusic();
-            var clip = FindClip(BackgroundMusicType.Defeat);
-
-            if (clip.mainClip)
-                PlayClip(clip.mainClip);
+            StopBackgroundMusic();
+            co = StartCoroutine(LoopThroughBackgroundMusic(BackgroundMusicType.Defeat));
         }
 
-        public void PlayVictoryClip()
+        public void PlayVictoryAudio()
         {
-            StopMainBackgroundMusic();
-            var clip = FindClip(BackgroundMusicType.Victory);
-
-            if (clip.mainClip)
-                PlayClip(clip.mainClip);
+            StopBackgroundMusic();
+            co = StartCoroutine(LoopThroughBackgroundMusic(BackgroundMusicType.Victory));
         }
 
-        private void StopMainBackgroundMusic()
+        public void PlayIncomingBossAudio()
         {
-            StopCoroutine(LoopThroughMainBackgroundMusic());
-            backgroundMusicSource.Stop();
+            StopBackgroundMusic();
+            co = StartCoroutine(LoopThroughBackgroundMusic(BackgroundMusicType.IncomingBoss));
+        }
+
+        public void PlayFinalBossAudio()
+        {
+            StopBackgroundMusic();
+            co = StartCoroutine(LoopThroughBackgroundMusic(BackgroundMusicType.Boss));
+        }
+
+        public void PlayDungeonAudio()
+        {
+            StopBackgroundMusic();
+            co = StartCoroutine(LoopThroughBackgroundMusic(BackgroundMusicType.Dungeon));
+        }
+
+        private void StopBackgroundMusic()
+        {
+            StopCoroutine(co);
+
+            if (backgroundMusicSource)
+                backgroundMusicSource.Stop();
         }
 
         // Referenced by GameObject: Audio -> BGM -> Event Listener. Gets executed when the OnChangedAudioBGM Event gets raised.
         // (Note: The OnChangedAudioBGM Event gets raised whenever the user changes the value of the BGM Slider in the Settings Scene.)
         public void AdjustSourceVolume()
         {
-            backgroundMusicSource.volume = AudioManager.BackgroundVolume;
+            if (backgroundMusicSource)
+                backgroundMusicSource.volume = AudioManager.BackgroundVolume;
         }
     }
 }
