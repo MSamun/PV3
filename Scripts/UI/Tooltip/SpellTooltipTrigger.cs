@@ -15,7 +15,7 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 
 using PV3.Miscellaneous;
-using PV3.ScriptableObjects.Character;
+using PV3.ScriptableObjects.Characters;
 using PV3.ScriptableObjects.Spells;
 using UnityEngine;
 
@@ -23,11 +23,12 @@ namespace PV3.UI.Tooltip
 {
     public class SpellTooltipTrigger : MonobehaviourReference
     {
-        public SpellObject Spell;
+        // Will make checks for the mutator and accessor later...
+        public SpellObject Spell { get; set; }
         public CharacterObject Character;
 
-        [Header("Pivot Points")]
-        [SerializeField] protected PivotVertical PivotVertical;
+        [Header("Pivot Points")] [SerializeField]
+        protected PivotVertical PivotVertical;
 
         [SerializeField] protected PivotHorizontal PivotHorizontal;
 
@@ -39,7 +40,7 @@ namespace PV3.UI.Tooltip
                 return;
             }
 
-            var contentDesc = TooltipDescriptionManager.GrabSpellDescription(Spell, Character.Attributes);
+            string contentDesc = TooltipDescriptionManager.GrabSpellDescription(Spell, Character.Attributes);
             var cooldownDesc = $"{Spell.totalCooldown.ToString()} turn{(Spell.totalCooldown > 1 ? "s" : string.Empty)}";
 
             TooltipController.InitializeTooltip(Spell.name, contentDesc, cooldownDesc, Spell.staminaCost.ToString());

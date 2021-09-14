@@ -15,6 +15,7 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using UnityEngine.Serialization;
 
 namespace PV3.Serialization
 {
@@ -32,13 +33,13 @@ namespace PV3.Serialization
     [Serializable]
     public class AudioData
     {
-        public float BackgroundMusicVolume;
-        public float ButtonSfxVolume;
+        public int BackgroundMusicVolume;
+        public int SfxVolume;
 
-        public AudioData(float backgroundMusicVolume = 1f, float buttonSfxVolume = 1f)
+        public AudioData(int backgroundMusicVolume = 100, int sfxVolume = 100)
         {
             BackgroundMusicVolume = backgroundMusicVolume;
-            ButtonSfxVolume = buttonSfxVolume;
+            SfxVolume = sfxVolume;
         }
     }
 }

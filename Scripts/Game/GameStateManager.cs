@@ -14,64 +14,35 @@
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
 
-using PV3.ScriptableObjects.Character;
+using PV3.ScriptableObjects.Characters;
 
 namespace PV3.Game
 {
+    public enum GameState
+    {
+        Start,
+        PlayerTurn,
+        EnemyTurn,
+        NextEnemy,
+        Victory,
+        Defeat
+    }
+
     public static class GameStateManager
     {
-        public enum GameState
-        {
-            Start,
-            PlayerTurn,
-            EnemyTurn,
-            NextEnemy,
-            Victory,
-            Defeat
-        }
-
         public static GameState CurrentGameState { get; private set; }
         public static EnemyObject CurrentEnemy { get; private set; }
         public static int CurrentEnemyLevel { get; private set; }
 
-        public static void SetCurrentEnemy(EnemyObject enemy)
+        public static void SetEnemy(EnemyObject enemy, int level)
         {
             CurrentEnemy = enemy;
-        }
-
-        public static void SetCurrentEnemyLevel(int level)
-        {
             CurrentEnemyLevel = level;
         }
 
-        public static void StartMatch()
+        public static void SetGameState(GameState state)
         {
-            CurrentGameState = GameState.Start;
-        }
-
-        public static void SwitchToPlayerTurn()
-        {
-            CurrentGameState = GameState.PlayerTurn;
-        }
-
-        public static void SwitchToEnemyTurn()
-        {
-            CurrentGameState = GameState.EnemyTurn;
-        }
-
-        public static void SwitchToNextEnemy()
-        {
-            CurrentGameState = GameState.NextEnemy;
-        }
-
-        public static void SwitchToVictory()
-        {
-            CurrentGameState = GameState.Victory;
-        }
-
-        public static void SwitchToDefeat()
-        {
-            CurrentGameState = GameState.Defeat;
+            CurrentGameState = state;
         }
     }
 }

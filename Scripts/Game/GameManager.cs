@@ -18,21 +18,21 @@ using PV3.Miscellaneous;
 using PV3.ScriptableObjects.Game;
 using PV3.Serialization;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace PV3.Game
 {
     public class GameManager : MonobehaviourReference
     {
-        [SerializeField] private IntValue StageListIndex;
+        [SerializeField] private IntValue StageIndex;
 
         [Header("UI Panels")]
         [SerializeField] private GameObject VictoryScreen;
-
         [SerializeField] private GameObject DefeatScreen;
 
         [Header("Game Events")]
-        [SerializeField] private GameEventObject OnStartStageVictoryEvent;
-        [SerializeField] private GameEventObject OnStartStageDefeatEvent;
+        [SerializeField] private GameEventObject OnStageVictoryEvent;
+        [SerializeField] private GameEventObject OnStageDefeatEvent;
 
         [Header("Character Game Events")]
         [SerializeField] private GameEventObject OnPlayerStartTurnEvent;
@@ -41,51 +41,99 @@ namespace PV3.Game
 
         private void Start()
         {
-            GameStateManager.StartMatch();
-            StageListIndex.Value = DataManager.LoadProgressionDataFromJson().StageData.ChosenStage - 1;
+            if (!StageIndex)
+            {
+                Debug.LogError("<color=red>ERROR:</color> StageListIndex is NULL in GameManager.cs. Ignoring request to set the index of the Stage...");
+                return;
+            }
+
+            GameStateManager.SetGameState(GameState.Start);
+            StageIndex.Value = DataManager.LoadProgressionDataFromJson().StageData.ChosenStage - 1;
         }
 
         public void StartPlayerTurn()
         {
-            GameStateManager.SwitchToPlayerTurn();
+            if (!OnPlayerStartTurnEvent)
+            {
+                Debug.LogError("<color=red>ERROR:</color> OnPlayerStartTurnEvent is NULL in GameManager.cs. Ignoring request to start the Player's turn...");
+                return;
+            }
+
+            GameStateManager.SetGameState(GameState.PlayerTurn);
             OnPlayerStartTurnEvent.Raise();
         }
 
         public void StartEnemyTurn()
         {
-            GameStateManager.SwitchToEnemyTurn();
+            if (!OnEnemyStartTurnEvent)
+            {
+                Debug.LogError("<color=red>ERROR:</color> OnEnemyStartTurnEvent is NULL in GameManager.cs. Ignoring request to start the Enemy's turn...");
+                return;
+            }
+
+            GameStateManager.SetGameState(GameState.EnemyTurn);
             OnEnemyStartTurnEvent.Raise();
         }
 
         public void MoveToNextEnemy()
         {
-            GameStateManager.SwitchToNextEnemy();
+            if (!OnMoveToNextEnemyEvent)
+            {
+                Debug.LogError("<color=red>ERROR:</color> OnMoveToNextEnemyEvent is NULL in GameManager.cs. Ignoring request to go to the next Enemy in Stage...");
+                return;
+            }
+
+            GameStateManager.SetGameState(GameState.NextEnemy);
             OnMoveToNextEnemyEvent.Raise();
         }
 
         public void StartVictoryState()
         {
-            GameStateManager.SwitchToVictory();
-            OnStartStageVictoryEvent.Raise();
+            if (!OnStageVictoryEvent)
+            {
+                Debug.LogError("<color=red>ERROR:</color> OnStartStageVictoryEvent is NULL in GameManager.cs. Ignoring request to initiate the Player's victory...");
+                return;
+            }
+
+            GameStateManager.SetGameState(GameState.Victory);
+            OnStageVictoryEvent.Raise();
         }
 
         public void StartDefeatState()
         {
-            GameStateManager.SwitchToDefeat();
-            OnStartStageDefeatEvent.Raise();
+            if (!OnStageDefeatEvent)
+            {
+                Debug.LogError("<color=red>ERROR:</color> OnStartStageDefeatEvent is NULL in GameManager.cs. Ignoring request to initiate the Player's defeat...");
+                return;
+            }
+
+            GameStateManager.SetGameState(GameState.Defeat);
+            OnStageDefeatEvent.Raise();
         }
 
         public void DisplayVictoryScreen()
         {
-            VictoryScreen.gameObject.SetActive(true);
-
             var newHighestStage = DataManager.LoadProgressionDataFromJson().StageData.ChosenStage;
             var data = new StageData(newHighestStage, newHighestStage + 1);
             DataManager.UpdateProgressionStageData(data);
+
+            if (!VictoryScreen)
+            {
+                Debug.LogError("<color=red>ERROR:</color> VictoryScreen is NULL in GameManager.cs. Ignoring request to display the Victory Panel...");
+                return;
+            }
+
+            VictoryScreen.gameObject.SetActive(true);
         }
 
         public void DisplayDefeatScreen()
         {
+            if (!DefeatScreen)
+            {
+                Debug.LogError("<color=red>ERROR:</color> DefeatScreen is NULL in GameManager.cs. Ignoring request to display the Defeat Panel...");
+                return;
+            }
+
             DefeatScreen.gameObject.SetActive(true);
         }
 

@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
 
-using PV3.Character.StatusEffects;
+using PV3.Characters.Common;
 using PV3.Miscellaneous;
 using PV3.ScriptableObjects.Spells;
 using UnityEngine;
@@ -23,28 +23,27 @@ namespace PV3.UI.Tooltip
 {
     public class StatusEffectTooltipTrigger : MonobehaviourReference
     {
-        [SerializeField] private StatusEffect statusEffect;
+        private StatusEffect _statusEffect;
 
         [Header("Pivot Points")]
-        [SerializeField] protected PivotVertical PivotVertical;
-
-        [SerializeField] protected PivotHorizontal PivotHorizontal;
+        [SerializeField] protected PivotVertical _PivotVertical;
+        [SerializeField] protected PivotHorizontal _PivotHorizontal;
 
         public void SetStatusEffect(StatusEffect effect)
         {
-            statusEffect = effect;
+            _statusEffect = effect;
         }
 
         public void TriggerTooltip()
         {
-            if (!statusEffect.inUse) return;
+            if (!_statusEffect.inUse) return;
 
-            var headerDesc = statusEffect.type == StatusType.DamageReduction ? "Damage Reduction" : $"{statusEffect.type.ToString()}";
-            var contenteDesc = TooltipDescriptionManager.GrabStatusEffectDescription(statusEffect);
-            var durationDesc = $"{statusEffect.duration.ToString()} turn{(statusEffect.duration > 1 ? "s" : string.Empty)}";
+            var headerDesc = _statusEffect.type == StatusType.DamageReduction ? "Damage Reduction" : $"{_statusEffect.type.ToString()}";
+            var contenteDesc = TooltipDescriptionManager.GrabStatusEffectDescription(_statusEffect);
+            var durationDesc = $"{_statusEffect.duration.ToString()} turn{(_statusEffect.duration > 1 ? "s" : string.Empty)}";
 
             TooltipController.InitializeTooltip(headerDesc, contenteDesc, durationDesc);
-            TooltipController.InitializePivotPointAndPosition(PivotHorizontal, PivotVertical, transform.position);
+            TooltipController.InitializePivotPointAndPosition(_PivotHorizontal, _PivotVertical, transform.position);
         }
     }
 }

@@ -26,7 +26,7 @@ namespace PV3.Game
         [Header("Stage Information")]
         [SerializeField] private IntValue CurrentEnemyIndex;
 
-        [SerializeField] private StageListObject ListOfStagesObject;
+        [SerializeField] private StageListScriptableObject ListScriptableOfStagesObject;
         [SerializeField] private IntValue StageListIndex;
 
         [Header("Game Events")]
@@ -34,12 +34,12 @@ namespace PV3.Game
         [SerializeField] private GameEventObject OnInitializeNewEnemyEvent;
         [SerializeField] private GameEventObject OnStartBossEncounterEvent;
 
-        private int numberOfDeaths;
+        private int _numberOfDeaths;
 
         private void Awake()
         {
             CurrentEnemyIndex.Value = 0;
-            numberOfDeaths = 0;
+            _numberOfDeaths = 0;
         }
 
         // Current Enemy Index gets set to 0 at runtime. Whenever an Enemy dies, the Current Enemy Index value gets incremented.
@@ -54,9 +54,9 @@ namespace PV3.Game
         //      - DisplayEnemyStatusEffects.cs      -> Keeps track of current Status Effects on Enemy.
         public void MoveOnToNextEnemy()
         {
-            numberOfDeaths++;
+            _numberOfDeaths++;
 
-            if (numberOfDeaths >= ListOfStagesObject.listOfStages[StageListIndex.Value].Stage.listOfEnemies.Count)
+            if (_numberOfDeaths >= ListScriptableOfStagesObject.ListOfStages[StageListIndex.Value].Stage.ListOfEnemies.Count)
             {
                 OnNoMoreEnemiesEvent.Raise();
             }
@@ -64,8 +64,8 @@ namespace PV3.Game
             {
                 CurrentEnemyIndex.Value++;
 
-                if (ListOfStagesObject.listOfStages[StageListIndex.Value].Stage.hasBoss &&
-                    numberOfDeaths == ListOfStagesObject.listOfStages[StageListIndex.Value].Stage.listOfEnemies.Count - 1)
+                if (ListScriptableOfStagesObject.ListOfStages[StageListIndex.Value].Stage.HasBoss &&
+                    _numberOfDeaths == ListScriptableOfStagesObject.ListOfStages[StageListIndex.Value].Stage.ListOfEnemies.Count - 1)
                 {
                     OnStartBossEncounterEvent.Raise();
                     return;

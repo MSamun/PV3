@@ -14,9 +14,8 @@
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
 
-using System;
-using PV3.Character.StatusEffects;
-using PV3.ScriptableObjects.Character;
+using PV3.Characters.Common;
+using PV3.ScriptableObjects.Characters;
 using PV3.ScriptableObjects.Spells;
 using UnityEngine;
 
@@ -24,7 +23,7 @@ namespace PV3.UI.Tooltip
 {
     public static class TooltipDescriptionManager
     {
-        private static AttributesObject attributes;
+        private static AttributesObject _attributes;
 
         public static string GrabSpellDescription(SpellObject spell, AttributesObject attr)
         {
@@ -32,13 +31,13 @@ namespace PV3.UI.Tooltip
                 return string.Empty;
 
             var localDesc = string.Empty;
-            attributes = attr;
+            _attributes = attr;
 
             for (var i = 0; i < spell.components.Count; i++)
             {
                 if (!spell.components[i]) continue;
 
-                var attributeBonus = CalculateAttributeBonus
+                string attributeBonus = CalculateAttributeBonus
                 (
                     spell.components[i].attributeType,
                     spell.components[i].attributePercentage,
@@ -47,7 +46,7 @@ namespace PV3.UI.Tooltip
 
                 var minimumValue = spell.components[i].minimumValue.ToString();
                 var maximumValue = spell.components[i].maximumValue.ToString();
-                var valueDesc = spell.components[i].usePercentage ? $"{maximumValue}%" : $"[{minimumValue} - {maximumValue}]";
+                string valueDesc = spell.components[i].usePercentage ? $"{maximumValue}%" : $"[{minimumValue} - {maximumValue}]";
 
                 if (spell.components[i] is DamageComponent)
                 {
@@ -78,7 +77,7 @@ namespace PV3.UI.Tooltip
                     // Damage, Block, Dodge, DamageReduction, and Critical Status Types.
                     if (!comp.isUnique)
                     {
-                        var typeDesc = comp.StatusType == StatusType.DamageReduction ? "Damage Reduction" : $"{comp.StatusType.ToString()}{(comp.StatusType != StatusType.Damage ? " Chance" : string.Empty)}";
+                        string typeDesc = comp.StatusType == StatusType.DamageReduction ? "Damage Reduction" : $"{comp.StatusType.ToString()}{(comp.StatusType != StatusType.Damage ? " Chance" : string.Empty)}";
 
                         // FORMAT: [Increases the caster's/Decreases the target's] [StatusType] by [##%](+AttributeType) for [#] turn[s].
                         localDesc += $"{nonUniqueStatusEffectDesc} {typeDesc} by {valueDesc}{attributeBonus} for {turnDesc}. ";
@@ -91,7 +90,7 @@ namespace PV3.UI.Tooltip
                         }
                         else
                         {
-                            var percentHealthDesc = comp.StatusType switch
+                            string percentHealthDesc = comp.StatusType switch
                             {
                                 StatusType.Linger => $"{(comp.usePercentage ? "of maximum health as " : string.Empty)}damage",
                                 StatusType.Regenerate => $"{(comp.usePercentage ? "of maximum " : string.Empty)}health",
@@ -166,30 +165,30 @@ namespace PV3.UI.Tooltip
             if (type == AttributeType.Strength)
             {
                 colorText = "#E17D00";
-                baseAttributeValue = attributes.Strength;
+                baseAttributeValue = _attributes.Strength;
             }
             else if (type == AttributeType.Dexterity)
             {
                 colorText = "#00C800";
-                baseAttributeValue = attributes.Dexterity;
+                baseAttributeValue = _attributes.Dexterity;
             }
             else if (type == AttributeType.Constitution)
             {
                 colorText = "#E10000";
-                baseAttributeValue = attributes.Constitution;
+                baseAttributeValue = _attributes.Constitution;
             }
             else if (type == AttributeType.Intelligence)
             {
                 colorText = "#00A0FF";
-                baseAttributeValue = attributes.Intelligence;
+                baseAttributeValue = _attributes.Intelligence;
             }
             else if (type == AttributeType.Armor)
             {
                 colorText = "#969696";
-                baseAttributeValue = attributes.Armor;
+                baseAttributeValue = _attributes.Armor;
             }
 
-            var finalAttributeValue = Mathf.FloorToInt(baseAttributeValue * percent);
+            int finalAttributeValue = Mathf.FloorToInt(baseAttributeValue * percent);
             return $"<color={colorText}>(+{finalAttributeValue + (isPercentHealth ? "%" : string.Empty)})</color>";
         }
     }

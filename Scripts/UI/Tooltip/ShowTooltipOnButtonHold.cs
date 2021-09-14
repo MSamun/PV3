@@ -18,23 +18,24 @@ using PV3.Miscellaneous;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 
 namespace PV3.UI.Tooltip
 {
     public class ShowTooltipOnButtonHold : MonobehaviourReference, IPointerDownHandler, IPointerUpHandler
     {
-        [SerializeField] private float requiredTime;
+        [SerializeField] private float RequiredTime;
 
         public UnityEvent OnLongClick;
-        private bool isHoldingDownSpell;
-        private float touchDuration;
+        private bool _isHoldingDownSpell;
+        private float _touchDuration;
 
         private void Update()
         {
-            if (!isHoldingDownSpell) return;
-            touchDuration += Time.deltaTime;
+            if (!_isHoldingDownSpell) return;
+            _touchDuration += Time.deltaTime;
 
-            if (touchDuration <= requiredTime) return;
+            if (_touchDuration <= RequiredTime) return;
 
             OnLongClick?.Invoke();
             Reset();
@@ -42,13 +43,13 @@ namespace PV3.UI.Tooltip
 
         private void Reset()
         {
-            isHoldingDownSpell = false;
-            touchDuration = 0;
+            _isHoldingDownSpell = false;
+            _touchDuration = 0;
         }
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            isHoldingDownSpell = true;
+            _isHoldingDownSpell = true;
         }
 
         public void OnPointerUp(PointerEventData eventData)

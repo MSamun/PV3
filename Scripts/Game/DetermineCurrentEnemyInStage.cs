@@ -18,19 +18,27 @@ using PV3.Miscellaneous;
 using PV3.ScriptableObjects.Game;
 using PV3.ScriptableObjects.Stages;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace PV3.Game
 {
     public class DetermineCurrentEnemyInStage : MonobehaviourReference
     {
-        [SerializeField] private StageListObject listOfStagesObject;
-        [SerializeField] private IntValue stageListIndex;
-        [SerializeField] private IntValue currentEnemyIndex;
+        [SerializeField] private StageListScriptableObject StageList;
+        [SerializeField] private IntValue StageIndex;
+        [SerializeField] private IntValue CurrentEnemyIndex;
 
         public void SetCurrentEnemy()
         {
-            GameStateManager.SetCurrentEnemy(listOfStagesObject.listOfStages[stageListIndex.Value].Stage.listOfEnemies[currentEnemyIndex.Value].enemy);
-            GameStateManager.SetCurrentEnemyLevel(listOfStagesObject.listOfStages[stageListIndex.Value].Stage.listOfEnemies[currentEnemyIndex.Value].level);
+            if (!StageList || !StageIndex || !CurrentEnemyIndex)
+            {
+                Debug.LogError("<color=red>ERROR:</color> StageList, StageIndex, and/or CurrentEnemyIndex is NULL in DetermineCurrentEnemyInStage.cs." +
+                               " Ignoring request to populate the current Enemy and its level...");
+                return;
+            }
+
+            GameStateManager.SetEnemy(StageList.ListOfStages[StageIndex.Value].Stage.ListOfEnemies[CurrentEnemyIndex.Value].Enemy,
+                StageList.ListOfStages[StageIndex.Value].Stage.ListOfEnemies[CurrentEnemyIndex.Value].Level);
         }
     }
 }

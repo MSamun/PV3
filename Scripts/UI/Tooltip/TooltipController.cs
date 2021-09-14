@@ -35,27 +35,26 @@ namespace PV3.UI.Tooltip
 
     public class TooltipController : MonobehaviourReference
     {
-        private static TooltipController instance;
-
-        [SerializeField] private TooltipUI tooltip;
+        private static TooltipController _instance;
+        [SerializeField] private TooltipUI Tooltip;
 
         private void Awake()
         {
-            if (instance != null)
+            if (_instance != null)
                 Destroy(gameObject);
             else
-                instance = this;
+                _instance = this;
         }
 
         public static void InitializeTooltip(string header, string desc, string cooldown = "", string staminaCost = "")
         {
-            instance.tooltip.PopulateTooltipComponents(header, desc, cooldown, staminaCost);
+            _instance.Tooltip.PopulateTooltipComponents(header, desc, cooldown, staminaCost);
         }
 
         public static void InitializePivotPointAndPosition(PivotHorizontal pivotX, PivotVertical pivotY, Vector3 position)
         {
-            instance.tooltip.SetPivotAndPosition(pivotX, pivotY, position);
-            instance.tooltip.Show();
+            _instance.Tooltip.SetPivotAndPosition(position, pivotX, pivotY);
+            _instance.Tooltip.Show();
         }
     }
 }
