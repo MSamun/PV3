@@ -30,7 +30,7 @@ namespace PV3.Characters.Player
 
         private void PopulatePlayerAttributesObjectFromJson()
         {
-            var data = DataManager.LoadPlayerDataFromJson().AttributeData;
+            AttributeData data = DataManager.LoadPlayerDataFromJson().AttributeData;
 
             Character.Class = (CombatClass) DataManager.LoadPlayerDataFromJson().BaseData.CombatClassID;
             Character.Attributes.Strength = data.Strength;

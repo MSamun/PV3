@@ -1,6 +1,6 @@
 ﻿// PV3 is a menu-based RPG game.
 // This file is part of the PV3 distribution (https://github.com/MSamun/PV3)
-// Copyright (C) 2021 Matthew Samun.
+// Copyright (C) 2021-2022 Matthew Samun.
 //
 // This program is free software: you can redistribute it and/or modify it
 // under the terms of the GNU General Public License as published by the Free
@@ -52,25 +52,31 @@ namespace PV3.Characters.Common
         {
             if (Character.CurrentHealth.Value <= 0) return;
 
-            var index = FindStatusEffectOfType(StatusType.Regenerate);
-            if (index == -1) return;
+            for (var i = 0; i < Character.StatusEffectObject.CurrentStatusEffects.Count; i++)
+            {
+                if (!Character.StatusEffectObject.CurrentStatusEffects[i].inUse) continue;
 
-            CalculateUniqueStatusEffectValue(index, true);
+                if (Character.StatusEffectObject.CurrentStatusEffects[i].type == StatusType.Regenerate)
+                    CalculateUniqueStatusEffectValue(i, true);
+            }
         }
 
         // The Linger Effect gets applied at the end of a Character's Turn.
         public void ApplyLingerEffect()
         {
-            var index = FindStatusEffectOfType(StatusType.Linger);
-            if (index == -1) return;
+            for (var i = 0; i < Character.StatusEffectObject.CurrentStatusEffects.Count; i++)
+            {
+                if (!Character.StatusEffectObject.CurrentStatusEffects[i].inUse) continue;
 
-            CalculateUniqueStatusEffectValue(index, false);
+                if (Character.StatusEffectObject.CurrentStatusEffects[i].type == StatusType.Linger)
+                    CalculateUniqueStatusEffectValue(i, false);
+            }
         }
 
         private void CalculateUniqueStatusEffectValue(int index, bool isRegen)
         {
             // Either deal [# - #] damage or deal damage equal to [# - #]% of Maximum Health.
-            var value = Character.StatusEffectObject.CurrentStatusEffects[index].isPercentage ? Mathf.RoundToInt(Character.MaxHealth.Value * (Character.StatusEffectObject.CurrentStatusEffects[index].bonusAmount / 100f)) : Character.StatusEffectObject.CurrentStatusEffects[index].bonusAmount;
+            int value = Character.StatusEffectObject.CurrentStatusEffects[index].isPercentage ? Mathf.RoundToInt(Character.MaxHealth.Value * (Character.StatusEffectObject.CurrentStatusEffects[index].bonusAmount / 100f)) : Character.StatusEffectObject.CurrentStatusEffects[index].bonusAmount;
 
             FloatingTextObject.SetFloatingTextColorAndValue(isRegen ? FloatingTextObject.HealColor : FloatingTextObject.DamageColor, value.ToString());
             OnCharacterDisplayFloatingTextEvent.Raise();
@@ -85,7 +91,7 @@ namespace PV3.Characters.Common
 
         public void CheckIfStunned()
         {
-            var index = FindStatusEffectOfType(StatusType.Stun);
+            int index = FindStatusEffectOfType(StatusType.Stun);
             if (index == -1)
                 OnCharacterNotStunnedEvent.Raise();
             else

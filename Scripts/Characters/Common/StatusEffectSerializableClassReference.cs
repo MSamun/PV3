@@ -19,8 +19,7 @@ using PV3.ScriptableObjects.Spells;
 
 namespace PV3.Characters.Common
 {
-    [Serializable]
-    public class StatusEffect
+    [Serializable] public class StatusEffect
     {
         public StatusType type;
         public int bonusAmount;
@@ -30,16 +29,8 @@ namespace PV3.Characters.Common
         public bool inUse;
         public bool isUnique;
 
-        public StatusEffect
-        (
-            StatusType type = StatusType.Damage,
-            int bonusAmount = 0,
-            int duration = 0,
-            bool isDebuff = false,
-            bool isPercentage = false,
-            bool isUnique = false,
-            bool inUse = false
-        )
+        public StatusEffect(StatusType type = StatusType.Damage, int bonusAmount = 0, int duration = 0, bool isDebuff = false,
+            bool isPercentage = false, bool isUnique = false, bool inUse = false)
         {
             this.type = type;
             this.bonusAmount = bonusAmount;

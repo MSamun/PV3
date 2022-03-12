@@ -1,6 +1,6 @@
 // PV3 is a menu-based RPG game.
 // This file is part of the PV3 distribution (https://github.com/MSamun/PV3)
-// Copyright (C) 2021 Matthew Samun.
+// Copyright (C) 2021-2022 Matthew Samun.
 //
 // This program is free software: you can redistribute it and/or modify it
 // under the terms of the GNU General Public License as published by the Free

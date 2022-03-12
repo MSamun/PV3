@@ -43,7 +43,7 @@ namespace PV3.Characters.Common
 
         private void InstantiateNewPrefab()
         {
-            var obj = Instantiate(StatusEffectPrefab, transform.position, Quaternion.identity);
+            GameObject obj = Instantiate(StatusEffectPrefab, transform.position, Quaternion.identity);
             obj.transform.SetParent(transform, false);
 
             ListOfStatusEffectPrefabsDisplayed.Add(obj);

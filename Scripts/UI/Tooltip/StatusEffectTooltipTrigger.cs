@@ -1,6 +1,6 @@
 // PV3 is a menu-based RPG game.
 // This file is part of the PV3 distribution (https://github.com/MSamun/PV3)
-// Copyright (C) 2021 Matthew Samun.
+// Copyright (C) 2021-2022 Matthew Samun.
 //
 // This program is free software: you can redistribute it and/or modify it
 // under the terms of the GNU General Public License as published by the Free
@@ -38,9 +38,9 @@ namespace PV3.UI.Tooltip
         {
             if (!_statusEffect.inUse) return;
 
-            var headerDesc = _statusEffect.type == StatusType.DamageReduction ? "Damage Reduction" : $"{_statusEffect.type.ToString()}";
-            var contenteDesc = TooltipDescriptionManager.GrabStatusEffectDescription(_statusEffect);
-            var durationDesc = $"{_statusEffect.duration.ToString()} turn{(_statusEffect.duration > 1 ? "s" : string.Empty)}";
+            string headerDesc = _statusEffect.type == StatusType.DamageReduction ? "DMG Reduction" : $"{_statusEffect.type.ToString()}";
+            string contenteDesc = TooltipDescriptionManager.GrabStatusEffectDescription(_statusEffect);
+            string durationDesc = _statusEffect.duration == -1 ? "PASSIVE" : $"{_statusEffect.duration.ToString()} turn{(_statusEffect.duration > 1 ? "s" : string.Empty)}";
 
             TooltipController.InitializeTooltip(headerDesc, contenteDesc, durationDesc);
             TooltipController.InitializePivotPointAndPosition(_PivotHorizontal, _PivotVertical, transform.position);

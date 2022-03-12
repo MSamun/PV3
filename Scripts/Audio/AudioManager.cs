@@ -92,7 +92,7 @@ namespace PV3.Audio
 
         private IEnumerator LoopThroughMusicClips(MusicType type = MusicType.Main)
         {
-            var music = FindClip(type);
+            Music music = FindClip(type);
 
             while (BackgroundMusicSource && music != null)
             {

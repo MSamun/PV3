@@ -1,6 +1,6 @@
 // PV3 is a menu-based RPG game.
 // This file is part of the PV3 distribution (https://github.com/MSamun/PV3)
-// Copyright (C) 2021 Matthew Samun.
+// Copyright (C) 2021-2022 Matthew Samun.
 //
 // This program is free software: you can redistribute it and/or modify it
 // under the terms of the GNU General Public License as published by the Free
@@ -24,22 +24,27 @@ namespace PV3.UI.Stages
 {
     public class DisplayTurnNotification : MonobehaviourReference
     {
-        [SerializeField] private float interval;
         [SerializeField] private TurnNotificationObject TurnNotifObject;
 
-        [Header("UI Components")]
-        [SerializeField] private TextMeshProUGUI notifText;
+        private float _interval;
+        private TextMeshProUGUI _notifText;
+        private CanvasGroup _canvasGroup;
 
-        [SerializeField] private CanvasGroup canvasGroup;
+        private void Start()
+        {
+            _interval = 10f;
+            _notifText = GetComponentInChildren<TextMeshProUGUI>(true);
+            _canvasGroup = GetComponentInChildren<CanvasGroup>(true);
+        }
 
         public void Toggle()
         {
-            notifText.text = TurnNotifObject.Description;
+            _notifText.text = TurnNotifObject.Description;
 
-            var mySequence = DOTween.Sequence();
-            mySequence.Append(canvasGroup.DOFade(1, 0.75f));
-            mySequence.AppendInterval(interval);
-            mySequence.Append(canvasGroup.DOFade(0, 0.75f));
+            Sequence mySequence = DOTween.Sequence();
+            mySequence.Append(_canvasGroup.DOFade(1, 0.75f));
+            mySequence.AppendInterval(_interval);
+            mySequence.Append(_canvasGroup.DOFade(0, 0.75f));
         }
     }
 }

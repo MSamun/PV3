@@ -35,7 +35,7 @@ namespace PV3.Characters.Common
         public void InitializePortrait()
         {
             PopulateUIComponents();
-            InitializeCharacterValues();
+            Character.Initialize();
         }
 
         public virtual void PopulateUIComponents()
@@ -43,14 +43,6 @@ namespace PV3.Characters.Common
             Icon.sprite = Character.PortraitSprite;
             NameText.text = Character.Name;
             LevelText.text = Character.Level.Value.ToString();
-        }
-
-        private void InitializeCharacterValues()
-        {
-            Character.SpellsListObject.ResetSpellCooldowns();
-            Character.StatusEffectObject.ResetStatusEffectList();
-            Character.StatusEffectObject.BonusObject.ResetAllBonusesToZero();
-            Character.InitializeStats();
         }
 
         public void RecoverStamina()

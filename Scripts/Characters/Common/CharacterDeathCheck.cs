@@ -34,8 +34,8 @@ namespace PV3.Characters.Common
 
         public void CheckIfCharacterIsDead(bool isCheckFromLinger = false)
         {
-            // When a Character dies from either a Spell or a Linger Effect, the functionality is the same for both cases (Enemy = move on to next enemy; Player = defeat).
-            // When a Character does not die from a Spell or a Linger Effect, the functionality is different, depending on the case:
+            // When a Character dies from either a Spell or a Linger Effect, the functionality is the same for both the Player and the Enemy (Enemy = move on to next enemy; Player = defeat).
+            // When a Character does not die from a Spell or a Linger Effect, the functionality is different, depending on whether it is the Player or the Enemy:
             // i.e. Enemy not dying from a Player Spell: first checks if Player has enough Stamina to use another Spell; if Player has enough Stamina, continue with Player Turn; else, go to Enemy Turn.
             // Player not dying from a Linger Effect: go to Enemy Turn. Linger Effect on a Character gets applied at the end of their turn.
             if (Character.IsDead())

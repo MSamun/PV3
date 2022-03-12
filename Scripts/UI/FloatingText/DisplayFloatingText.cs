@@ -39,15 +39,13 @@ namespace PV3.UI.FloatingText
     public class DisplayFloatingText : MonobehaviourReference
     {
         [SerializeField] private FloatingTextObject FloatingTextObject;
+        [Header("")] [SerializeField] private List<PreInstantiatedFloatingTextPrefabs> FloatingTextPrefabs;
 
-        [Header("")]
-        [SerializeField] private List<PreInstantiatedFloatingTextPrefabs> FloatingTextPrefabs = new List<PreInstantiatedFloatingTextPrefabs>();
-
-        private Transform floatingTextSpawnPosition;
+        private Transform _floatingTextSpawnPosition;
 
         private void Start()
         {
-            floatingTextSpawnPosition = GetComponent<Transform>();
+            _floatingTextSpawnPosition = GetComponent<Transform>();
 
             ResetFloatingTextPrefabsList();
             FindTextComponentsOfPrefabsInList();
@@ -91,8 +89,8 @@ namespace PV3.UI.FloatingText
 
         private void InstantiateNewPrefab()
         {
-            var go = Instantiate(FloatingTextObject.FloatingTextPrefab, floatingTextSpawnPosition.position, Quaternion.identity);
-            go.transform.SetParent(floatingTextSpawnPosition, false);
+            var go = Instantiate(FloatingTextObject.FloatingTextPrefab, _floatingTextSpawnPosition.position, Quaternion.identity);
+            go.transform.SetParent(_floatingTextSpawnPosition, false);
 
             var newPrefab = new PreInstantiatedFloatingTextPrefabs(go, go.GetComponentInChildren<TextMeshProUGUI>(true));
             FloatingTextPrefabs.Add(newPrefab);

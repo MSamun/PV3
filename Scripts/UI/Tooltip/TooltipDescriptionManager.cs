@@ -16,6 +16,7 @@
 
 using PV3.Characters.Common;
 using PV3.ScriptableObjects.Characters;
+using PV3.ScriptableObjects.Skills;
 using PV3.ScriptableObjects.Spells;
 using UnityEngine;
 
@@ -46,7 +47,7 @@ namespace PV3.UI.Tooltip
 
                 var minimumValue = spell.components[i].minimumValue.ToString();
                 var maximumValue = spell.components[i].maximumValue.ToString();
-                string valueDesc = spell.components[i].usePercentage ? $"{maximumValue}%" : $"[{minimumValue} - {maximumValue}]";
+                string valueDesc = spell.components[i].usePercentage ? $"{maximumValue}%" : (maximumValue == minimumValue ? $"[{maximumValue}]" : $"[{minimumValue} - {maximumValue}]");
 
                 if (spell.components[i] is DamageComponent)
                 {
@@ -150,6 +151,37 @@ namespace PV3.UI.Tooltip
                         localDesc = $"Heals for <color=#E10000>{effect.bonusAmount.ToString()}{(effect.isPercentage ? "% of maximum" : string.Empty)} Health</color> at the beginning of your turn.";
                         break;
                 }
+            }
+
+            return localDesc;
+        }
+
+        public static string GrabSkillDescription(SkillsObject skill = null)
+        {
+            if (!skill) return string.Empty;
+
+            var localDesc = string.Empty;
+
+            for (var i = 0; i < skill.Components.Count; i++)
+            {
+                if (!skill.Components[i]) continue;
+
+                var newEffect = new StatusEffect
+                (
+                    skill.Components[i].StatusType == StatusType.Random ? skill.Components[i].ChooseRandomStatusType() : skill.Components[i].StatusType,
+                    skill.Components[i].GetRandomValueBetweenRange(),
+                    skill.Components[i].duration,
+                    skill.Components[i].isDebuff,
+                    skill.Components[i].usePercentage,
+                    skill.Components[i].isUnique,
+                    true
+                );
+
+                // Skill Tooltips need to make it clear that any Skill that has a Linger Status Effect is applied on you, not the Enemy.
+                if (skill.Components[i].StatusType == StatusType.Linger && skill.Components[i].applyOnCaster)
+                    localDesc = $"{localDesc}Take <color=#E10000>{newEffect.bonusAmount.ToString()}{(newEffect.isPercentage ? "% of maximum Health</color> as" : "</color>")} damage at the end of your turn. ";
+                else
+                    localDesc = $"{localDesc}{GrabStatusEffectDescription(newEffect)} ";
             }
 
             return localDesc;
